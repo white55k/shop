@@ -1,2 +1,0 @@
-# shop
-small shop
