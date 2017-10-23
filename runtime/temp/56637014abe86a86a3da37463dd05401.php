@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:64:"C:\wamp64\www\my_obj\shop\public/../app/index\view\shopcart.html";i:1508763523;}*/ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -23,12 +24,12 @@
 			<ul class="message-l">
 				<div class="topMessage">
 					<div class="menu-hd">
-					{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
-						<a href="{:url('user/login')}" target="_top" class="h">亲，请登录</a>
-						<a href="{:url('user/reg')}" target="_top">免费注册</a>
-					{else /}
-						欢迎您！<a href="#" target="_top" class="h">{$Think.session.username ?? $Think.cookie.username}</a>
-					{/if}
+					<?php if(empty(\think\Session::get('username')) AND empty(\think\Cookie::get('username'))): ?>
+						<a href="<?php echo url('user/login'); ?>" target="_top" class="h">亲，请登录</a>
+						<a href="<?php echo url('user/reg'); ?>" target="_top">免费注册</a>
+					<?php else: ?>
+						欢迎您！<a href="#" target="_top" class="h"><?php echo (\think\Session::get('username')) ? \think\Session::get('username') :  \think\Cookie::get('username'); ?></a>
+					<?php endif; ?>
 					</div>
 				</div>
 			</ul>
@@ -108,23 +109,23 @@
 							</div>
 							<div class="clear"></div>
 							<div class="bundle-main">
-								{foreach $res_car as $v}
+								<?php foreach($res_car as $v): ?>
 								<ul class="item-content clearfix">
 									<li class="td td-chk">
 										<div class="cart-checkbox ">
-											<input class="check j_check{$v.cid}" id="J_CheckBox_170037950254" name="items[]" value="{$v.cid}" type="checkbox">
+											<input class="check j_check<?php echo $v['cid']; ?>" id="J_CheckBox_170037950254" name="items[]" value="<?php echo $v['cid']; ?>" type="checkbox">
 											<label for="J_CheckBox_170037950254"></label>
 										</div>
 									</li>
 
 									<li class="td td-item">
 										<div class="item-pic">
-											<a href="#" target="_blank" data-title="{$v->good['details']}" class="J_MakePoint" data-point="tbcart.8.12">
-												<img src="{$v->good->picture[0]['path_url']}" class="itempic J_ItemImg"></a>
+											<a href="#" target="_blank" data-title="<?php echo $v->good['details']; ?>" class="J_MakePoint" data-point="tbcart.8.12">
+												<img src="<?php echo $v->good->picture[0]['path_url']; ?>" class="itempic J_ItemImg"></a>
 										</div>
 										<div class="item-info">
 											<div class="item-basic-info">
-												<a href="#" target="_blank" title="{$v->good['details']}" class="item-title J_MakePoint" data-point="tbcart.8.11">{$v->good['details']}</a>
+												<a href="#" target="_blank" title="<?php echo $v->good['details']; ?>" class="item-title J_MakePoint" data-point="tbcart.8.11"><?php echo $v->good['details']; ?></a>
 											</div>
 										</div>
 									</li>
@@ -137,10 +138,10 @@
 										<div class="item-price price-promo-promo">
 											<div class="price-content">
 												<div class="price-line">
-													<em class="price-original">{$v->good['price']}</em>
+													<em class="price-original"><?php echo $v->good['price']; ?></em>
 												</div>
 												<div class="price-line">
-													<em class="J_Price price-now j_price{$v.cid}" tabindex="0">{$v->good['money']}</em>
+													<em class="J_Price price-now j_price<?php echo $v['cid']; ?>" tabindex="0"><?php echo $v->good['money']; ?></em>
 												</div>
 											</div>
 										</div>
@@ -149,64 +150,64 @@
 										<div class="amount-wrapper ">
 											<div class="item-amount ">
 												<div class="sl">
-													<input class="min am-btn min{$v.cid}" name="" type="button" value="-" />
-													<input class="text_box text_box{$v.cid}" name="" type="text" value="{$v.quantity}" style="width:30px;" />
-													<input class="add am-btn add{$v.cid}" name="" type="button" value="+" />
+													<input class="min am-btn min<?php echo $v['cid']; ?>" name="" type="button" value="-" />
+													<input class="text_box text_box<?php echo $v['cid']; ?>" name="" type="text" value="<?php echo $v['quantity']; ?>" style="width:30px;" />
+													<input class="add am-btn add<?php echo $v['cid']; ?>" name="" type="button" value="+" />
 												</div>
 											</div>
 										</div>
 									</li>
 									<li class="td td-sum">
 										<div class="td-inner">
-											<em tabindex="0" class="J_ItemSum number j_money{$v.cid}">{$v->quantity * $v->good['money']}</em>
+											<em tabindex="0" class="J_ItemSum number j_money<?php echo $v['cid']; ?>"><?php echo $v->quantity * $v->good['money']; ?></em>
 										</div>
 									</li>
 									<li class="td td-op">
 										<div class="td-inner">
 											<a title="移入收藏夹" class="btn-fav" href="#">
                   移入收藏夹</a>
-											<a href="{:url('DelCar/index', ['cid'=>$v->cid])}" data-point-url="#" class="delete">
+											<a href="<?php echo url('DelCar/index', ['cid'=>$v->cid]); ?>" data-point-url="#" class="delete">
                   删除</a>
 										</div>
 									</li>
 								</ul>
 								<script type="text/javascript">
 									$(document).ready(function(){
-										$('.j_check{$v.cid}').click(function(){
-											if ($('.j_check{$v.cid}').prop('checked')) {
-												var j_total = parseFloat($('#J_Total').html()) + parseFloat($('.j_money{$v.cid}').html());
+										$('.j_check<?php echo $v['cid']; ?>').click(function(){
+											if ($('.j_check<?php echo $v['cid']; ?>').prop('checked')) {
+												var j_total = parseFloat($('#J_Total').html()) + parseFloat($('.j_money<?php echo $v['cid']; ?>').html());
 												$('#J_Total').html(j_total.toFixed(2));
 											} else {
-													var j_total = parseFloat($('#J_Total').html()) - parseFloat($('.j_money{$v.cid}').html());
+													var j_total = parseFloat($('#J_Total').html()) - parseFloat($('.j_money<?php echo $v['cid']; ?>').html());
 													$('#J_Total').html(j_total.toFixed(2));
 											}
 										})
-										$('.min{$v.cid}').click(function(){
-											if ($('.text_box{$v.cid}').val() == 0) {
+										$('.min<?php echo $v['cid']; ?>').click(function(){
+											if ($('.text_box<?php echo $v['cid']; ?>').val() == 0) {
 												return ;
 											}
-											$.get("{:url('AddCar/delQuantity')}",{cid:{$v.cid}},function(data){
-												var allMoney = data.quantity * $('.j_price{$v.cid}').html();
-												$('.j_money{$v.cid}').html(allMoney.toFixed(2));
+											$.get("<?php echo url('AddCar/delQuantity'); ?>",{cid:<?php echo $v['cid']; ?>},function(data){
+												var allMoney = data.quantity * $('.j_price<?php echo $v['cid']; ?>').html();
+												$('.j_money<?php echo $v['cid']; ?>').html(allMoney.toFixed(2));
 											});
-											if ($('.j_check{$v.cid}').prop('checked')) {
-												var j_total = parseFloat($('#J_Total').html()) - parseFloat($('.j_price{$v.cid}').html());
+											if ($('.j_check<?php echo $v['cid']; ?>').prop('checked')) {
+												var j_total = parseFloat($('#J_Total').html()) - parseFloat($('.j_price<?php echo $v['cid']; ?>').html());
 												$('#J_Total').html(j_total.toFixed(2));
 											}
 										});
-										$('.add{$v.cid}').click(function(){
-											$.get("{:url('AddCar/addQuantity')}",{cid:{$v.cid}},function(data){
-												var allMoney = data.quantity * $('.j_price{$v.cid}').html();
-												$('.j_money{$v.cid}').html(allMoney.toFixed(2));
+										$('.add<?php echo $v['cid']; ?>').click(function(){
+											$.get("<?php echo url('AddCar/addQuantity'); ?>",{cid:<?php echo $v['cid']; ?>},function(data){
+												var allMoney = data.quantity * $('.j_price<?php echo $v['cid']; ?>').html();
+												$('.j_money<?php echo $v['cid']; ?>').html(allMoney.toFixed(2));
 											});
-											if ($('.j_check{$v.cid}').prop('checked')) {
-												var j_total = parseFloat($('#J_Total').html()) + parseFloat($('.j_price{$v.cid}').html());
+											if ($('.j_check<?php echo $v['cid']; ?>').prop('checked')) {
+												var j_total = parseFloat($('#J_Total').html()) + parseFloat($('.j_price<?php echo $v['cid']; ?>').html());
 												$('#J_Total').html(j_total.toFixed(2));
 											}
 										});
 									});
 								</script>
-								{/foreach}
+								<?php endforeach; ?>
 
 								
 							</div>
@@ -251,13 +252,13 @@
 									}
 									var cid = [];
 									var i = 0;
-									{foreach $res_car as $v}
-									if ($('.j_check{$v.cid}').prop('checked')) {
-										cid[i] = {$v.cid};
+									<?php foreach($res_car as $v): ?>
+									if ($('.j_check<?php echo $v['cid']; ?>').prop('checked')) {
+										cid[i] = <?php echo $v['cid']; ?>;
 									}
 									i++;
-									{/foreach}
-									var url = "{:url('Pay/index', ['cid'=>'Cid'])}";
+									<?php endforeach; ?>
+									var url = "<?php echo url('Pay/index', ['cid'=>'Cid']); ?>";
 									url = url.replace('Cid', cid);
 									if (url.length) {
 										$(location).attr('href', url);

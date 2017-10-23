@@ -1,0 +1,55 @@
+{foreach $res_address as $v}
+	<li class="user-addresslist defaultAddr">
+
+		<div class="address-left">
+			<div class="user DefaultAddr">
+
+				<span class="buy-address-detail">   
+				<span class="buy-user">{$v.consignee}</span>
+				<span class="buy-phone">{$v.phone}</span>
+				</span>
+			</div>
+			<div class="default-address DefaultAddr">
+				<span class="buy-line-title buy-line-title-type">收货地址：</span>
+				<span class="buy--address-detail">
+		   <span class="province">{$v.province}</span>
+				<span class="city">{$v.city}</span>
+				<span class="dist">{$v.country}</span>
+				<span class="street">{$v.address}</span>
+				</span>
+
+				</span>
+			</div>
+			{eq name="$v.is_default" value="1"}
+			<ins class="deftip">默认地址</ins>
+			{/eq}
+		</div>
+		<div class="address-right">
+			<a href="person/address.html">
+				<span class="am-icon-angle-right am-icon-lg"></span></a>
+		</div>
+		<div class="clear"></div>
+
+		<div class="new-addr-btn">
+			<a href="#" class="hidden">设为默认</a>
+			<span class="new-addr-bar hidden">|</span>
+			<a href="#" class="theme-login editAddr{$v.aid}">编辑</a>
+			<span class="new-addr-bar">|</span>
+			<a href="javascript:void(0);" onclick="delClick(this);">删除</a>
+		</div>
+
+	</li>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.useAddr').click(function(){
+				$('.newAddr').html('新增地址');
+				$('#address-aid').val(0);
+			});
+			$('.editAddr{$v.aid}').click(function(){
+				$('.newAddr').html('变更地址');
+				$('#address-aid').val({$v.aid});
+			})
+		});
+	</script>
+	<div class="per-border"></div>
+{/foreach}

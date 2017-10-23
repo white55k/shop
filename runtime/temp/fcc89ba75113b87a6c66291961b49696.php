@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:68:"C:\wamp64\www\my_obj\shop\public/../app/index\view\introduction.html";i:1508739353;}*/ ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -31,18 +32,18 @@
 			<ul class="message-l">
 				<div class="topMessage">
 					<div class="menu-hd">
-						{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
-						<a href="{:url('user/login')}" target="_top" class="h">亲，请登录</a>
-						<a href="{:url('user/reg')}" target="_top">免费注册</a>
-						{else /}
-						欢迎您！<a href="#" target="_top" class="h">{$Think.session.username ?? $Think.cookie.username}</a>
-						{/if}
+						<?php if(empty(\think\Session::get('username')) AND empty(\think\Cookie::get('username'))): ?>
+						<a href="<?php echo url('user/login'); ?>" target="_top" class="h">亲，请登录</a>
+						<a href="<?php echo url('user/reg'); ?>" target="_top">免费注册</a>
+						<?php else: ?>
+						欢迎您！<a href="#" target="_top" class="h"><?php echo (\think\Session::get('username')) ? \think\Session::get('username') :  \think\Cookie::get('username'); ?></a>
+						<?php endif; ?>
 					</div>
 				</div>
 			</ul>
 			<ul class="message-r">
 				<div class="topMessage home">
-					<div class="menu-hd"><a href="{:url('Index/index')}" target="_top" class="h">商城首页</a></div>
+					<div class="menu-hd"><a href="<?php echo url('Index/index'); ?>" target="_top" class="h">商城首页</a></div>
 				</div>
 				<div class="topMessage my-shangcheng">
 					<div class="menu-hd MyShangcheng"><a href="#" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a></div>
@@ -80,7 +81,7 @@
 					   <div class="long-title"><span class="all-goods">全部分类</span></div>
 					   <div class="nav-cont">
 							<ul>
-								<li class="index"><a href="{:url('Index/index')}">首页</a></li>
+								<li class="index"><a href="<?php echo url('Index/index'); ?>">首页</a></li>
                                 <li class="qc"><a href="#">闪购</a></li>
                                 <li class="qc"><a href="#">限时抢</a></li>
                                 <li class="qc"><a href="#">团购</a></li>
@@ -144,16 +145,16 @@
 							</script>
 
 							<div class="tb-booth tb-pic tb-s310">
-								<a href=""><img src="{$res_picture[0]['mid_picture']}" alt="细节展示放大镜特效" rel="{$res_picture[0]['big_picture']}" class="jqzoom" /></a>
+								<a href=""><img src="<?php echo $res_picture[0]['mid_picture']; ?>" alt="细节展示放大镜特效" rel="<?php echo $res_picture[0]['big_picture']; ?>" class="jqzoom" /></a>
 							</div>
 							<ul class="tb-thumb" id="thumblist">
-								{foreach $res_picture as $v}
+								<?php foreach($res_picture as $v): ?>
 								<li class="tb-selected">
 									<div class="tb-pic tb-s40">
-										<a href="#"><img src="{$v.small_picture}" mid="{$v.mid_picture}" big="{$v.big_picture}"></a>
+										<a href="#"><img src="<?php echo $v['small_picture']; ?>" mid="<?php echo $v['mid_picture']; ?>" big="<?php echo $v['big_picture']; ?>"></a>
 									</div>
 								</li>
-								{/foreach}
+								<?php endforeach; ?>
 							</ul>
 						</div>
 
@@ -166,7 +167,7 @@
 						<!--名称-->
 						<div class="tb-detail-hd">
 						<h1>	
-				 			{$res_good.keyword}	
+				 			<?php echo $res_good['keyword']; ?>	
 	          </h1>
 						</div>
 						<div class="tb-detail-list">
@@ -174,11 +175,11 @@
 							<div class="tb-detail-price">
 								<li class="price iteminfo_price">
 									<dt>促销价</dt>
-									<dd><em>¥</em><b class="sys_item_price">{$res_good.money}</b>  </dd>                                 
+									<dd><em>¥</em><b class="sys_item_price"><?php echo $res_good['money']; ?></b>  </dd>                                 
 								</li>
 								<li class="price iteminfo_mktprice">
 									<dt>原价</dt>
-									<dd><em>¥</em><b class="sys_item_mktprice">{$res_good.price}</b></dd>									
+									<dd><em>¥</em><b class="sys_item_mktprice"><?php echo $res_good['price']; ?></b></dd>									
 								</li>
 								<div class="clear"></div>
 							</div>
@@ -187,13 +188,13 @@
 							<!--销量-->
 							<ul class="tm-ind-panel">
 								<li class="tm-ind-item tm-ind-sellCount canClick">
-									<div class="tm-indcon"><span class="tm-label">月销量</span><span class="tm-count">{$res_consume_m}</span></div>
+									<div class="tm-indcon"><span class="tm-label">月销量</span><span class="tm-count"><?php echo $res_consume_m; ?></span></div>
 								</li>
 								<li class="tm-ind-item tm-ind-sumCount canClick">
-									<div class="tm-indcon"><span class="tm-label">累计销量</span><span class="tm-count">{$res_consume_a}</span></div>
+									<div class="tm-indcon"><span class="tm-label">累计销量</span><span class="tm-count"><?php echo $res_consume_a; ?></span></div>
 								</li>
 								<li class="tm-ind-item tm-ind-reviewCount canClick tm-line3">
-									<div class="tm-indcon"><span class="tm-label">累计评价</span><span class="tm-count">{$res_comment_count}</span></div>
+									<div class="tm-indcon"><span class="tm-label">累计评价</span><span class="tm-count"><?php echo $res_comment_count; ?></span></div>
 								</li>
 							</ul>
 							<div class="clear"></div>
@@ -219,9 +220,9 @@
 													<div class="theme-options">
 														<div class="cart-title">口味</div>
 														<ul>
-															{foreach $res_taste as $v}
-															<li class="sku-line">{$v.taste_type}<i></i></li>
-															{/foreach}
+															<?php foreach($res_taste as $v): ?>
+															<li class="sku-line"><?php echo $v['taste_type']; ?><i></i></li>
+															<?php endforeach; ?>
 														</ul>
 													</div>
 													<div class="theme-options">
@@ -230,7 +231,7 @@
 															<input id="min" class="am-btn am-btn-default" name="" type="button" value="-" />
 															<input id="text_box" name="" type="text" value="1" style="width:30px;" />
 															<input id="add" class="am-btn am-btn-default" name="" type="button" value="+" />
-															<span id="Stock" class="tb-hidden">库存<span class="stock">{$res_good.stock}</span>件</span>
+															<span id="Stock" class="tb-hidden">库存<span class="stock"><?php echo $res_good['stock']; ?></span>件</span>
 														</dd>
 
 													</div>
@@ -267,10 +268,10 @@
 										<script type="text/javascript">
 											$(document).ready(function(){
 												$(".hot span").click(function() {
-													{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
-													$(location).attr('href', "{:url('User/login')}");
-													{else /}
-													$.post('{:url("Coupon/addUser")}',{gid:1},function(data){
+													<?php if(empty(\think\Session::get('username')) AND empty(\think\Cookie::get('username'))): ?>
+													$(location).attr('href', "<?php echo url('User/login'); ?>");
+													<?php else: ?>
+													$.post('<?php echo url("Coupon/addUser"); ?>',{gid:1},function(data){
 														if (!data) {
 															$('.gold-list li').html('优惠券已领完');
 														} else {
@@ -278,7 +279,7 @@
 														}
 													});
 													$(".shopPromotion.gold .coupon").toggle();
-													{/if}
+													<?php endif; ?>
 												})
 											})
 										</script>
@@ -309,11 +310,11 @@
 							</li>
 							<li>
 								<div class="clearfix tb-btn tb-btn-basket theme-login">
-									{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
-									<a id="LikBasket" title="加入购物车" href="{:url('User/login')}"></a>
-									{else /}
-									<a id="LikBasket" title="加入购物车" href="{:url('AddCar/index', ['gid'=>$res_good['gid']])}"><i></i>加入购物车</a>
-									{/if}
+									<?php if(empty(\think\Session::get('username')) AND empty(\think\Cookie::get('username'))): ?>
+									<a id="LikBasket" title="加入购物车" href="<?php echo url('User/login'); ?>"></a>
+									<?php else: ?>
+									<a id="LikBasket" title="加入购物车" href="<?php echo url('AddCar/index', ['gid'=>$res_good['gid']]); ?>"><i></i>加入购物车</a>
+									<?php endif; ?>
 								</div>
 							</li>
 						</div>
@@ -333,18 +334,18 @@
 						     	<div class="mt">            
 						            <h2>看了又看</h2>        
 					            </div>
-						     		{foreach $res_similar as $v}
+						     		<?php foreach($res_similar as $v): ?>
 							      <li>
 							      	<div class="p-img">                    
-							      		<a  href="#"> <img class="" src="{$v->picture[0]['path_url']}"> </a>               
+							      		<a  href="#"> <img class="" src="<?php echo $v->picture[0]['path_url']; ?>"> </a>               
 							      	</div>
 							      	<div class="p-name"><a href="#">
-							      		{$v.keyword}
+							      		<?php echo $v['keyword']; ?>
 							      	</a>
 							      	</div>
-							      	<div class="p-price"><strong>&yen;{$v.money}</strong></div>
+							      	<div class="p-price"><strong>&yen;<?php echo $v['money']; ?></strong></div>
 							      </li>
-							      {/foreach}
+							      <?php endforeach; ?>
 						     </ul>					
 					    </div>
 					</div>
@@ -381,15 +382,15 @@
 											<h4>产品参数：</h4></div>
 										<div class="clear"></div>
 										<ul id="J_AttrUL">
-											<li title="">产品类型:&nbsp;{$res_param.type}</li>
-											<li title="">原料产地:&nbsp;{$res_param.produce}</li>
-											<li title="">配料表:&nbsp;{$res_param.burden}</li>
-											<li title="">产品规格:&nbsp;{$res_param.specification}</li>
-											<li title="">保质期:&nbsp;{$res_param.quelity_date}</li>
-											<li title="">产品标准号:&nbsp;{$res_param.standard_number}</li>
-											<li title="">生产许可证编号：&nbsp;{$res_param.premit_number}</li>
-											<li title="">储存方法：&nbsp;{$res_param.store_up}</li>
-											<li title="">食用方法：&nbsp;{$res_param.eat_method}</li>
+											<li title="">产品类型:&nbsp;<?php echo $res_param['type']; ?></li>
+											<li title="">原料产地:&nbsp;<?php echo $res_param['produce']; ?></li>
+											<li title="">配料表:&nbsp;<?php echo $res_param['burden']; ?></li>
+											<li title="">产品规格:&nbsp;<?php echo $res_param['specification']; ?></li>
+											<li title="">保质期:&nbsp;<?php echo $res_param['quelity_date']; ?></li>
+											<li title="">产品标准号:&nbsp;<?php echo $res_param['standard_number']; ?></li>
+											<li title="">生产许可证编号：&nbsp;<?php echo $res_param['premit_number']; ?></li>
+											<li title="">储存方法：&nbsp;<?php echo $res_param['store_up']; ?></li>
+											<li title="">食用方法：&nbsp;<?php echo $res_param['eat_method']; ?></li>
 										</ul>
 										<div class="clear"></div>
 									</div>
@@ -399,9 +400,9 @@
 											<h4>商品细节</h4>
 										</div>
 										<div class="twlistNews">
-										{foreach $res_picture as $v}
-											<img src="{$v.path_url}" />
-										{/foreach}
+										<?php foreach($res_picture as $v): ?>
+											<img src="<?php echo $v['path_url']; ?>" />
+										<?php endforeach; ?>
 										</div>
 									</div>
 									<div class="clear"></div>
@@ -896,25 +897,25 @@
 								<div class="am-tab-panel am-fade">
 									<div class="like">
 										<ul class="am-avg-sm-2 am-avg-md-3 am-avg-lg-4 boxes">
-											{foreach $res_all_similar as $v}
+											<?php foreach($res_all_similar as $v): ?>
 											<li>
 												<div class="i-pic limit">
-													<img src="{$v->picture[0]['path_url']}" />
+													<img src="<?php echo $v->picture[0]['path_url']; ?>" />
 													<p>
-														<span>{$v.details}</span></p>
+														<span><?php echo $v['details']; ?></span></p>
 													<p class="price fl">
 														<b>¥</b>
-														<strong>{$v.money}</strong>
+														<strong><?php echo $v['money']; ?></strong>
 													</p>
 												</div>
 											</li>
-											{/foreach}
+											<?php endforeach; ?>
 										</ul>
 									</div>
 									<div class="clear"></div>
 
 									<!--分页 -->
-									{$res_all_similar->render()}
+									<?php echo $res_all_similar->render(); ?>
 									<script type="text/javascript">
 										$(function(){
 							        $(".am-pagination a").click(function() { 

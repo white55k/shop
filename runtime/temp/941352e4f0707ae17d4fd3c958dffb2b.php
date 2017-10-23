@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:59:"C:\wamp64\www\my_obj\shop\public/../app/index\view\pay.html";i:1508764905;s:67:"C:\wamp64\www\my_obj\shop\public/../app/index\view\new_address.html";i:1508757455;}*/ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -25,12 +26,12 @@
 			<ul class="message-l">
 				<div class="topMessage">
 					<div class="menu-hd">
-						{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
-							<a href="{:url('user/login')}" target="_top" class="h">亲，请登录</a>
-							<a href="{:url('user/reg')}" target="_top">免费注册</a>
-						{else /}
-							欢迎您！<a href="#" target="_top" class="h">{$Think.session.username ?? $Think.cookie.username}</a>
-						{/if}
+						<?php if(empty(\think\Session::get('username')) AND empty(\think\Cookie::get('username'))): ?>
+							<a href="<?php echo url('user/login'); ?>" target="_top" class="h">亲，请登录</a>
+							<a href="<?php echo url('user/reg'); ?>" target="_top">免费注册</a>
+						<?php else: ?>
+							欢迎您！<a href="#" target="_top" class="h"><?php echo (\think\Session::get('username')) ? \think\Session::get('username') :  \think\Cookie::get('username'); ?></a>
+						<?php endif; ?>
 					</div>
 				</div>
 			</ul>
@@ -78,7 +79,61 @@
 						<div class="clear"></div>
 						<ul class="showAddress">
 							<div class="per-border"></div>
-							{include file="new_address"}
+							<?php foreach($res_address as $v): ?>
+	<li class="user-addresslist defaultAddr">
+
+		<div class="address-left">
+			<div class="user DefaultAddr">
+
+				<span class="buy-address-detail">   
+				<span class="buy-user"><?php echo $v['consignee']; ?></span>
+				<span class="buy-phone"><?php echo $v['phone']; ?></span>
+				</span>
+			</div>
+			<div class="default-address DefaultAddr">
+				<span class="buy-line-title buy-line-title-type">收货地址：</span>
+				<span class="buy--address-detail">
+		   <span class="province"><?php echo $v['province']; ?></span>
+				<span class="city"><?php echo $v['city']; ?></span>
+				<span class="dist"><?php echo $v['country']; ?></span>
+				<span class="street"><?php echo $v['address']; ?></span>
+				</span>
+
+				</span>
+			</div>
+			<?php if($v['is_default'] == '1'): ?>
+			<ins class="deftip">默认地址</ins>
+			<?php endif; ?>
+		</div>
+		<div class="address-right">
+			<a href="person/address.html">
+				<span class="am-icon-angle-right am-icon-lg"></span></a>
+		</div>
+		<div class="clear"></div>
+
+		<div class="new-addr-btn">
+			<a href="#" class="hidden">设为默认</a>
+			<span class="new-addr-bar hidden">|</span>
+			<a href="#" class="theme-login editAddr<?php echo $v['aid']; ?>">编辑</a>
+			<span class="new-addr-bar">|</span>
+			<a href="javascript:void(0);" onclick="delClick(this);">删除</a>
+		</div>
+
+	</li>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.useAddr').click(function(){
+				$('.newAddr').html('新增地址');
+				$('#address-aid').val(0);
+			});
+			$('.editAddr<?php echo $v['aid']; ?>').click(function(){
+				$('.newAddr').html('变更地址');
+				$('#address-aid').val(<?php echo $v['aid']; ?>);
+			})
+		});
+	</script>
+	<div class="per-border"></div>
+<?php endforeach; ?>
 						</ul>
 
 						<div class="clear"></div>
@@ -135,7 +190,7 @@
 							<div class="clear"></div>
 
 							<tr class="item-list">
-							{foreach $res_car as $v}
+							<?php foreach($res_car as $v): ?>
 								<div class="bundle  bundle-last">
 
 									<div class="bundle-main">
@@ -144,11 +199,11 @@
 												<li class="td td-item">
 													<div class="item-pic">
 														<a href="#" class="J_MakePoint">
-															<img src="{$v->good->picture[0]['path_url']}" class="itempic J_ItemImg"></a>
+															<img src="<?php echo $v->good->picture[0]['path_url']; ?>" class="itempic J_ItemImg"></a>
 													</div>
 													<div class="item-info">
 														<div class="item-basic-info">
-															<a href="#" class="item-title J_MakePoint" data-point="tbcart.8.11">{$v->good->details}</a>
+															<a href="#" class="item-title J_MakePoint" data-point="tbcart.8.11"><?php echo $v->good->details; ?></a>
 														</div>
 													</div>
 												</li>
@@ -156,7 +211,7 @@
 												<li class="td td-price">
 													<div class="item-price price-promo-promo">
 														<div class="price-content">
-															<em class="J_Price price-now">{$v->good->money}</em>
+															<em class="J_Price price-now"><?php echo $v->good->money; ?></em>
 														</div>
 													</div>
 												</li>
@@ -166,14 +221,14 @@
 													<div class="item-amount ">
 														<span class="phone-title">购买数量</span>
 														<div class="sl">
-															<input class="text_box" name="" type="text" value="{$v.quantity}" style="width:30px;" disabled="disabled" />
+															<input class="text_box" name="" type="text" value="<?php echo $v['quantity']; ?>" style="width:30px;" disabled="disabled" />
 														</div>
 													</div>
 												</div>
 											</li>
 											<li class="td td-sum">
 												<div class="td-inner">
-													<em tabindex="0" class="J_ItemSum number">{$v->quantity * $v->good['money']}</em>
+													<em tabindex="0" class="J_ItemSum number"><?php echo $v->quantity * $v->good['money']; ?></em>
 												</div>
 											</li>
 											<li class="td td-oplist">
@@ -189,7 +244,7 @@
 										<div class="clear"></div>
 
 									</div>
-							{/foreach}
+							<?php endforeach; ?>
 							
 							
 							</tr>
@@ -411,13 +466,13 @@
 							var country = $('.address select:eq(2)').val();
 							var address = $('#user-intro').val();
 							if ($('.newAddr').html() == '新增地址') {
-								$.post("{:url('Address/index')}",{consignee:consignee, phone:phone, province:province, city:city, country:country, address:address},function(data){
+								$.post("<?php echo url('Address/index'); ?>",{consignee:consignee, phone:phone, province:province, city:city, country:country, address:address},function(data){
 									$('.showAddress').html('');
 									$('.showAddress').append(data);
 								});
 							} else {
 								var aid = $('#address-aid').val();
-								$.post("{:url('Address/updateAddr')}",{aid:aid, consignee:consignee, phone:phone, province:province, city:city, country:country, address:address},function(data){
+								$.post("<?php echo url('Address/updateAddr'); ?>",{aid:aid, consignee:consignee, phone:phone, province:province, city:city, country:country, address:address},function(data){
 									$('.showAddress').html('');
 									$('.showAddress').append(data);
 								});

@@ -104,10 +104,7 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
-	//优惠券
-	$(".hot span").click(function() {
-		$(".shopPromotion.gold .coupon").toggle();
-	})
+	
 
 
 
@@ -122,7 +119,7 @@ $(document).ready(function() {
 			if (parseInt(t.val()) != 1) {
 				$('#min').attr('disabled', false);
 			}
-
+			alert(1);
 		})
 		//数量减少操作
 	$("#min").click(function() {

@@ -23,6 +23,21 @@ class User extends Model
 		dump($res->toArray());*/
 	}
 
+	public function address()
+	{
+		return $this->hasMany('Address', 'user_id');
+	}
+
+	public function car()
+	{
+		return $this->hasOne('Car', 'user_id');
+	}
+
+	public function coupon()
+	{
+		return $this->belongsTo('Coupon', 'user_id');
+	}
+
 	public function shop()
 	{
 		return $this->hasOne('Shop', 'uid');
