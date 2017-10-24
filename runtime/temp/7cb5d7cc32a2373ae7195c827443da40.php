@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:63:"D:\wei2017\wamp64\www\shop\public/../app/index\view\center.html";i:1508763071;}*/ ?>
 <!DOCTYPE html>
 <html>
 
@@ -92,10 +93,10 @@
 								<div class="m-bg"></div>
 								<div class="m-userinfo">
 									<div class="m-baseinfo">
-										<a href="{:url('Information/information')}">
+										<a href="<?php echo url('Information/information'); ?>">
 											<img src="__IMAGES__/getAvatar.do.jpg">
 										</a>
-										<em class="s-name">({$Think.session.username ?? $Think.cookie.username})<span class="vip1"></em>
+										<em class="s-name">(<?php echo (\think\Session::get('username')) ? \think\Session::get('username') :  \think\Cookie::get('username'); ?>)<span class="vip1"></em>
 										<div class="s-prestige am-btn am-round">
 											</span>会员福利</div>
 									</div>
@@ -125,7 +126,7 @@
 										<a href="coupon.html">
 											<i><img src="__IMAGES__/coupon.png"/></i>
 											<span class="m-title">优惠券</span>
-											<em class="m-num">{$coupon}</em>
+											<em class="m-num"><?php echo $coupon; ?></em>
 										</a>
 									</p>
 									<p class="m-bill">
@@ -158,9 +159,9 @@
 									<a class="i-load-more-item-shadow" href="order.html">全部订单</a>
 								</div>
 								<ul>
-									<li><a href="order.html"><i><img src="__IMAGES__/pay.png"/></i><span>待付款<em class="m-num">{$order}</em></span></a></li>
-									<li><a href="order.html"><i><img src="__IMAGES__/send.png"/></i><span>待发货<em class="m-num">{$express}</em></span></a></li>
-									<li><a href="order.html"><i><img src="__IMAGES__/receive.png"/></i><span>待收货<em class="m-num">{$delivery}</em></span></a></li>
+									<li><a href="order.html"><i><img src="__IMAGES__/pay.png"/></i><span>待付款<em class="m-num"><?php echo $order; ?></em></span></a></li>
+									<li><a href="order.html"><i><img src="__IMAGES__/send.png"/></i><span>待发货<em class="m-num"><?php echo $express; ?></em></span></a></li>
+									<li><a href="order.html"><i><img src="__IMAGES__/receive.png"/></i><span>待收货<em class="m-num"><?php echo $delivery; ?></em></span></a></li>
 									<li><a href="order.html"><i><img src="__IMAGES__/comment.png"/></i><span>待评价<em class="m-num">3</em></span></a></li>
 									<li><a href="change.html"><i><img src="__IMAGES__/refund.png"/></i><span>退换货</span></a></li>
 								</ul>

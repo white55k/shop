@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 
 namespace app\index\model;
@@ -41,3 +42,26 @@ class Coupon extends Model
 		return $this->hasMany('User', 'user_id');
 	}
 }
+=======
+<?php
+
+namespace app\index\model;
+
+use app\index\model\Center;
+use app\index\model\User;
+use think\Model;
+
+class Coupon extends Model
+{
+	public function selectAll()
+	{
+	    $username = session('username') ? session('username') : cookie('username');
+		$user = new User;
+		$res_uid = $user->getByUsername($username)->uid;
+		$res = $this->where('user_id', 'eq', $res_uid)->select();
+		return $res;
+		
+	}
+	
+}
+>>>>>>> 6bff5109f783c7916846746c205929f1cdde21a9

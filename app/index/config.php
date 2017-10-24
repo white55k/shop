@@ -14,6 +14,7 @@ return [
     // | 应用设置
     // +----------------------------------------------------------------------
 
+<<<<<<< HEAD
     // 应用命名空间
     'app_namespace'          => 'app',
     // 应用调试模式
@@ -264,4 +265,21 @@ return [
         // 验证成功后是否重置
         'reset'    => true
     ],
+=======
+
+    // 视图输出字符串内容替换
+    'view_replace_str'       => [
+        '__CSS__'      => '/static/index/css',
+        '__JS__'       => '/static/index/js',
+        '__IMAGES__'   => '/static/index/images',
+        '__BASIC__'    => '/static/index/basic',
+        '__AMAZEUI_CSS__'   => '/static/index/AmazeUI-2.4.2/assets/css',
+        '__AMAZEUI_JS__'    => '/static/index/AmazeUI-2.4.2/assets/js',
+        '__AMAZEUI_FONTS'   => '/static/index/AmazeUI-2.4.2/assets/fonts',
+        '__AMAZEUI_I'   => '/static/index/AmazeUI-2.4.2/assets/I',
+
+        
+    ],
+    
+>>>>>>> 6bff5109f783c7916846746c205929f1cdde21a9
 ];
