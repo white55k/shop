@@ -7,14 +7,14 @@
 
 		<title>账单明细</title>
 
-		<link href="AmazeUI-2.4.2/assets/css/admin.css" rel="stylesheet" type="text/css">
-		<link href="AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/admin.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/amazeui.css" rel="stylesheet" type="text/css">
 
-		<link href="css/personal.css" rel="stylesheet" type="text/css">
-		<link href="css/bilstyle.css" rel="stylesheet" type="text/css">
+		<link href="__CSS__/personal.css" rel="stylesheet" type="text/css">
+		<link href="__CSS__/bilstyle.css" rel="stylesheet" type="text/css">
 
-		<script src="AmazeUI-2.4.2/assets/js/jquery.min.js" type="text/javascript"></script>
-		<script src="AmazeUI-2.4.2/assets/js/amazeui.js"></script>
+		<script src="__AMAZEUI_JS__/jquery.min.js" type="text/javascript"></script>
+		<script src="__AMAZEUI_JS__/amazeui.js"></script>
 
 	</head>
 
@@ -28,8 +28,13 @@
 						<ul class="message-l">
 							<div class="topMessage">
 								<div class="menu-hd">
-									<a href="#" target="_top" class="h">亲，请登录</a>
-									<a href="#" target="_top">免费注册</a>
+									{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+									<a href="{:url('user/login')}" target="_top" class="h">亲，请登录</a>
+									<a href="{:url('user/register')}" target="_top">免费注册</a>
+									{else /}
+									欢迎您！<a href="#" target="_top" class="h">{$Think.session.username ?? $Think.cookie.username}</a>
+									{/if}
+
 								</div>
 							</div>
 						</ul>
@@ -52,7 +57,7 @@
 
 						<div class="nav white">
 							<div class="logoBig">
-								<li><img src="images/logobig.png" /></li>
+								<li><img src="__IMAGES__/logobig.png" /></li>
 							</div>
 
 							<div class="search-bar pr">
@@ -99,12 +104,12 @@
 					<div class="order-time">
 						<label class="form-label">交易时间：</label>
 						<div class="show-input">
-							<select class="am-selected" data-am-selected>
-								<option value="today">今天</option>
-								<option value="sevenDays" selected="">最近一周</option>
-								<option value="oneMonth">最近一个月</option>
-								<option value="threeMonths">最近三个月</option>
-								<option class="date-trigger">自定义时间</option>
+							<select class="am-selected" style="height: 30px;background: #F3F3F3">
+								<option>今天</option>
+								<option>本周</option>
+								<option>本月</option>
+								<option>本年</option>
+								<option>全部</option>
 							</select>
 						</div>
                           <div class="clear"></div>
@@ -122,67 +127,33 @@
 							</tr>
 						</thead>
 
-						<tbody>
+						<tbody class="bill_detail">
+							{volist name="bill_details" id="bill_detail"}
 							<tr>
 								<td class="img">
-									<i><img src="images/songzi.jpg"></i>
+									<i><img src="__IMAGES__/{$bill_detail->good->picture['small_picture']}"></i>
 								</td>
 								<td class="time">
-									<p> 2016-01-28
-									</p>
-									<p class="text-muted"> 10:58
+									<p> {$bill_detail.create_time}
 									</p>
 								</td>
 								<td class="title name">
 									<p class="content">
-										良品铺子精选松子，即开即食全国包邮
+										{$bill_detail->good['name']}
 									</p>
 								</td>
 
 								<td class="amount">
-									<span class="amount-pay">- 11.90</span>
+									<span class="amount-pay">- {$bill_detail.money}</span>
 								</td>
 								<td class="operation">
-									删除
+									<a href="{:url('Billlist/dele',['cid'=>$bill_detail->cid])}">删除</a>
 								</td>
 							</tr>
 
-							<tr>
-
-								<td class="img">
-									<i><img src="images/songzi.jpg"></i>
-								</td>
-								<td class="time">
-									<p> 2016-01-28
-									</p>
-									<p class="text-muted"> 10:58
-									</p>
-								</td>
-								<td class="title name">
-									<p class="content">
-										良品铺子精选松子，即开即食全国包邮
-									</p>
-								</td>
-
-								<td class="amount">
-									<span class="amount-pay">- 11.90</span>
-								</td>
-								<td class="operation">
-									删除
-								</td>
-							</tr>
+							{/volist}
 						</tbody>
-					</table>
-				
-					<script type="text/javascript">
-						$(document).ready(function() {
-							$(".date-trigger").click(function() {
-								$(".show-input").css("display", "none");
-							});
-							
-						 })
-					</script>					
-					
+					</table>						
 				</div>
 				<!--底部-->
 				<div class="footer">
@@ -211,30 +182,30 @@
 
 			<aside class="menu">
 				<ul>
-					<li class="person">
-						<a href="index.html">个人中心</a>
+					<li class="person active">
+						<a href="{:url('Center/center')}">个人中心</a>
 					</li>
 					<li class="person">
-						<a href="#">个人资料</a>
+						<a href="{:url('Center/center')}">个人资料</a>
 						<ul>
-							<li> <a href="information.html">个人信息</a></li>
-							<li> <a href="safety.html">安全设置</a></li>
-							<li> <a href="address.html">收货地址</a></li>
+							<li> <a href="{:url('Information/information')}">个人信息</a></li>
+							<li> <a href="{:url('Safe/safety')}">安全设置</a></li>
+							<li> <a href="{:url('Address/address')}">收货地址</a></li>
 						</ul>
 					</li>
 					<li class="person">
-						<a href="#">我的交易</a>
+						<a href="{:url('Order/order')}">我的交易</a>
 						<ul>
-							<li><a href="order.html">订单管理</a></li>
+							<li><a href="{:url('Order/order')}">订单管理</a></li>
 							<li> <a href="change.html">退款售后</a></li>
 						</ul>
 					</li>
 					<li class="person">
-						<a href="#">我的资产</a>
+						<a href="{:url('Coupon/coupon')}">我的资产</a>
 						<ul>
-							<li> <a href="coupon.html">优惠券 </a></li>
+							<li> <a href="{:url('Coupon/coupon')}">优惠券 </a></li>
 							<li> <a href="bonus.html">红包</a></li>
-							<li class="active"> <a href="bill.html">账单明细</a></li>
+							<li> <a href="{:url('Bill/bill')}">账单明细</a></li>
 						</ul>
 					</li>
 
@@ -256,3 +227,11 @@
 	</body>
 
 </html>
+<script type="text/javascript">
+	$('select').change(function(){
+		var time = $('.am-selected').val();
+		$.post("{:url('Billlist/chaKan')}",{time:time},function(data){
+			$('.bill_detail').html(data);
+		});
+	});
+</script>

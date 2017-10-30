@@ -7,14 +7,14 @@
 
 		<title>验证邮箱</title>
 
-		<link href="AmazeUI-2.4.2/assets/css/admin.css" rel="stylesheet" type="text/css">
-		<link href="AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/admin.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/amazeui.css" rel="stylesheet" type="text/css">
 
-		<link href="css/personal.css" rel="stylesheet" type="text/css">
-		<link href="css/stepstyle.css" rel="stylesheet" type="text/css">
+		<link href="__CSS__/personal.css" rel="stylesheet" type="text/css">
+		<link href="__CSS__/stepstyle.css" rel="stylesheet" type="text/css">
 
-		<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-		<script src="AmazeUI-2.4.2/assets/js/amazeui.js"></script>
+		<script type="text/javascript" src="__JS__/jquery-1.7.2.min.js"></script>
+		<script src="__AMAZEUI_JS__/amazeui.js"></script>
 
 	</head>
 
@@ -52,7 +52,7 @@
 
 						<div class="nav white">
 							<div class="logoBig">
-								<li><img src="images/logobig.png" /></li>
+								<li><img src="__IMAGES__/logobig.png" /></li>
 							</div>
 
 							<div class="search-bar pr">
@@ -91,7 +91,7 @@
 				<div class="main-wrap">
 
 					<div class="am-cf am-padding">
-						<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">绑定邮箱</strong> / <small>Email</small></div>
+						<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">绑定邮箱</strong> / <small id="bindemail">{$email}</small></div>
 					</div>
 					<hr/>
 					<!--进度条-->
@@ -117,22 +117,24 @@
 						<div class="am-form-group">
 							<label for="user-email" class="am-form-label">验证邮箱</label>
 							<div class="am-form-content">
-								<input type="email" id="user-email" placeholder="请输入邮箱地址">
+								<input type="email" name="email" id="user-email" placeholder="请输入邮箱地址">
 							</div>
 						</div>
 						<div class="am-form-group code">
 							<label for="user-code" class="am-form-label">验证码</label>
 							<div class="am-form-content">
-								<input type="tel" id="user-code" placeholder="验证码">
+								<input type="tel" name="code" id="user-code" placeholder="验证码">
 							</div>
-							<a class="btn" href="javascript:void(0);" onClick="sendMobileCode();" id="sendMobileCode">
+							<a class="btn" href="javascript:void(0);" id="sendMobileCode">
 								<div class="am-btn am-btn-danger">验证码</div>
 							</a>
 						</div>
 						<div class="info-btn">
-							<div class="am-btn am-btn-danger">保存修改</div>
+							<div class="am-btn am-btn-danger" id="chaneg">保存修改</div>
 						</div>
-
+						<div>
+							<p id="zhanshi" style="text-align: center;margin-top: 20px;color: red"></p>
+						</div>
 					</form>
 
 				</div>
@@ -164,14 +166,14 @@
 			<aside class="menu">
 				<ul>
 					<li class="person">
-						<a href="index.html">个人中心</a>
+						<a href="{:url('Center/center')}">个人中心</a>
 					</li>
 					<li class="person">
-						<a href="#">个人资料</a>
+						<a href="{:url('Center/center')}">个人中心</a>
 						<ul>
-							<li> <a href="information.html">个人信息</a></li>
-							<li> <a href="safety.html">安全设置</a></li>
-							<li> <a href="address.html">收货地址</a></li>
+							<li> <a href="{:url('Information/information')}">个人信息</a></li>
+							<li class="active"> <a href="{:url('Safe/safety')}">安全设置</a></li>
+							<li> <a href="{:url('Address/address')}">收货地址</a></li>
 						</ul>
 					</li>
 					<li class="person">
@@ -208,3 +210,25 @@
 	</body>
 
 </html>
+<script type="text/javascript">
+	/*发送验证码*/
+	$('#sendMobileCode').click(function(){
+		var email = $('input[name=email]').val();
+		$.post("{:url('User/sendYou')}",{email:email},function(data){
+			$('#zhanshi').html('* &nbsp' + data);
+		})
+	});
+	/*点击验证*/
+	$('#chaneg').click(function(){
+		var email = $('input[name=email]').val();
+		var aemail = $('#bindemail').text();
+		var code = $('input[name=code]').val();
+		if (!aemail) {
+			$('#zhanshi').html('* &nbsp' + "您还未绑定邮箱");
+		}
+		$.post("{:url('User/changeEmail')}",{email:email,code:code},function(data){
+			$('#zhanshi').html('* &nbsp' + data);
+		})
+	})
+	
+</script>

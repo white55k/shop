@@ -7,12 +7,12 @@
 
 		<title>个人账单</title>
 
-		<link href="AmazeUI-2.4.2/assets/css/admin.css" rel="stylesheet" type="text/css">
-		<link href="AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/admin.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/amazeui.css" rel="stylesheet" type="text/css">
 
-		<link href="css/personal.css" rel="stylesheet" type="text/css">
-		<link href="css/blstyle.css" rel="stylesheet" type="text/css">
-		<script src="AmazeUI-2.4.2/assets/js/jquery.min.js"></script>
+		<link href="__CSS__/personal.css" rel="stylesheet" type="text/css">
+		<link href="__CSS__/blstyle.css" rel="stylesheet" type="text/css">
+		<script src="__AMAZEUI_JS__/jquery.min.js"></script>
 	</head>
 
 	<body>
@@ -25,8 +25,12 @@
 						<ul class="message-l">
 							<div class="topMessage">
 								<div class="menu-hd">
-									<a href="#" target="_top" class="h">亲，请登录</a>
-									<a href="#" target="_top">免费注册</a>
+									{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+									<a href="{:url('user/login')}" target="_top" class="h">亲，请登录</a>
+									<a href="{:url('user/register')}" target="_top">免费注册</a>
+									{else /}
+									欢迎您！<a href="#" target="_top" class="h">{$Think.session.username ?? $Think.cookie.username}</a>
+									{/if}
 								</div>
 							</div>
 						</ul>
@@ -49,7 +53,7 @@
 
 						<div class="nav white">
 							<div class="logoBig">
-								<li><img src="images/logobig.png" /></li>
+								<li><img src="__IMAGES__/logobig.png" /></li>
 							</div>
 
 							<div class="search-bar pr">
@@ -105,10 +109,10 @@
 
 								<div class=" ng-scope">
 									<div class="trade-circle-select  slidedown-">
-										<a href="javascript:void(0);" class="current-circle ng-binding">2015/11/01 - 2015/11/30</a>
+										<a href="javascript:void(0);" class="current-circle ng-binding">{$time_a} - {$time_b}</a>
 
 									</div>
-									<span class="title-tag"><i class="num ng-binding">12</i>月</span>
+									<span class="title-tag"><i class="num ng-binding">{$month_a}</i>月</span>
 								</div>
 							</div>
 
@@ -118,10 +122,10 @@
 										<h3 class="income-title block-title">
                                                                                                           支出
                                       <span class="num ng-binding">
-                                              119.80
+                                            您本月已支出-----{$money}-----软妹币
                                        </span>
                                     <span class="desc ng-binding">
-                                           <a href="billlist.html">查看支出明细</a>
+                                          
                                          </span>
                                              </h3>
 
@@ -138,67 +142,17 @@
 													购买商品
 												</div>
 												<ul>
-												
+													{volist name="res_consume" id="res_consume"}
 													<li class="ng-scope  delete-false">
 
 														<div class="  ng-scope">
 															<a href="#" class="text fn-left " title="呢子大衣">
-																<span class="emoji-span ng-binding">呢子大衣</span>
-																<span class="amount fn-right ng-binding">349.00</span>
+																<span class="emoji-span ng-binding">{$res_consume->good->name}</span>
+																<span class="amount fn-right ng-binding">{$res_consume['money']}</span>
 															</a>
 														</div>
 													</li>
-
-													<li class="ng-scope  delete-false">
-
-														<div class="  ng-scope">
-															<a href="#" class="text fn-left " title="金士顿羊年限量版16gU盘">
-																<span class="emoji-span ng-binding">金士顿羊年限量版16gU盘</span>
-																<span class="amount fn-right ng-binding">39.00</span>
-															</a>
-														</div>
-													</li>
-
-													<li class="ng-scope  delete-false">
-
-														<div class="  ng-scope">
-															<a href="#" class="text fn-left " title="呢子大衣">
-																<span class="emoji-span ng-binding">呢子大衣</span>
-																<span class="amount fn-right ng-binding">349.00</span>
-															</a>
-														</div>
-													</li>
-
-													<li class="ng-scope  delete-false">
-
-														<div class="  ng-scope">
-															<a href="#" class="text fn-left " title="金士顿羊年限量版16gU盘">
-																<span class="emoji-span ng-binding">金士顿羊年限量版16gU盘</span>
-																<span class="amount fn-right ng-binding">39.00</span>
-															</a>
-														</div>
-													</li>
-
-													<li class="ng-scope  delete-false">
-
-														<div class="  ng-scope">
-															<a href="#" class="text fn-left " title="呢子大衣">
-																<span class="emoji-span ng-binding">呢子大衣</span>
-																<span class="amount fn-right ng-binding">349.00</span>
-															</a>
-														</div>
-													</li>
-
-													<li class="ng-scope  delete-false">
-
-														<div class="  ng-scope">
-															<a href="#" class="text fn-left " title="羊毛毡底鞋垫">
-																<span class="emoji-span ng-binding">羊毛毡底鞋垫</span>
-																<span class="amount fn-right ng-binding">9.90</span>
-															</a>
-														</div>
-													</li>
-
+													{/volist}	
 												</ul>
 											</div>
 										</div>
@@ -210,12 +164,12 @@
 
 									<!--收入-->
 									<h3 class="expense income-title block-title">
-                                                                                                                       收入                                                              
+										耐滴：{$Think.session.username ?? $Think.cookie.username}</a>
                                       <span class="num ng-binding">
-                                              0.00
+                                              ！！
                                        </span>
                                     <span class="desc ng-binding">
-                                           <a href="billlist.html">查看收入明细</a>
+                                           <a href="{:url('Billlist/billlist')}">查看支出明细</a>
                                     </span>
                                 </h3>
 								</div>
@@ -237,7 +191,7 @@
 											<div class="mask">
 
 												<div class="bac fn-left"></div>
-												<div class="bank ng-binding" style="background-image: url(images/combo.png);">中国农业银行</div>
+												<div class="bank ng-binding" style="background-image: url(__IMAGES__/combo.png);">中国农业银行</div>
 												<div class="details">
 													<a>查看详情</a>
 												</div>
@@ -245,7 +199,7 @@
 										</div>
 										<div class="cards-details">
 											<div class="bank-name">
-												<div class="name fn-left" style="background-image: url(images/combo.png);"></div>
+												<div class="name fn-left" style="background-image: url(__IMAGES__/combo.png);"></div>
 												<span class="close fn-right"><a>X</a></span>
 											</div>
 											<div class="bank-detail">
@@ -333,30 +287,30 @@
 
 			<aside class="menu">
 				<ul>
-					<li class="person">
-						<a href="index.html">个人中心</a>
+					<li class="person active">
+						<a href="{:url('Center/center')}">个人中心</a>
 					</li>
 					<li class="person">
-						<a href="#">个人资料</a>
+						<a href="{:url('Center/center')}">个人资料</a>
 						<ul>
-							<li> <a href="information.html">个人信息</a></li>
-							<li> <a href="safety.html">安全设置</a></li>
-							<li> <a href="address.html">收货地址</a></li>
+							<li> <a href="{:url('Information/information')}">个人信息</a></li>
+							<li> <a href="{:url('Safe/safety')}">安全设置</a></li>
+							<li> <a href="{:url('Address/address')}">收货地址</a></li>
 						</ul>
 					</li>
 					<li class="person">
-						<a href="#">我的交易</a>
+						<a href="{:url('Order/order')}">我的交易</a>
 						<ul>
-							<li><a href="order.html">订单管理</a></li>
+							<li><a href="{:url('Order/order')}">订单管理</a></li>
 							<li> <a href="change.html">退款售后</a></li>
 						</ul>
 					</li>
 					<li class="person">
-						<a href="#">我的资产</a>
+						<a href="{:url('Coupon/coupon')}">我的资产</a>
 						<ul>
-							<li> <a href="coupon.html">优惠券 </a></li>
+							<li> <a href="{:url('Coupon/coupon')}">优惠券 </a></li>
 							<li> <a href="bonus.html">红包</a></li>
-							<li class="active"> <a href="bill.html">账单明细</a></li>
+							<li> <a href="{:url('Bill/bill')}">账单明细</a></li>
 						</ul>
 					</li>
 
