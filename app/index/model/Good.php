@@ -159,4 +159,5 @@ class Good extends Model
 	{
 		return $this->hasMany('Taste', 'good_id');
 	}
+
 }

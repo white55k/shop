@@ -59,7 +59,6 @@ $(document).ready(function(){
             $("#city").children().not(":eq(0)").remove();
             num1=$(this).children("option:selected").index();
             var acity1=cities[num1-1];
-            console.log(num1);
             for(var j=0;j<acity1.length;j++){
             $("#city").append("<option>"+acity1[j]+"</option>");
             }

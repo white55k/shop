@@ -22,26 +22,56 @@ class Information extends Controller
 		$res_site = $this->site->selectAll();
         $this->assign('res_site', $res_site);
 	}
+
 	public function information()
 	{
 		$username = session('username') ? session('username') : cookie('username');
 		# 会员等级
-		$result = Db::name('user')->where('username','eq',$username)->find();
-		$res = $result['gold'];
-		if ($res < 500) {
-			$res = '铜牌会员';
-		} else if($res > 500 && $res < 1500) {
-			$res = '黄金会员';
-		} else {
-			$res = '钻石会员';
-		}
+		$level = $this->user->findLevel();
+		$findLevel = $level->level->appellation;
+		$result = $this->user->message();
 		# 会员头像
 		$pic = $result['picture'];
+		# 电话 
+		$phone = $result['phone'];
+		# 邮箱
+		$email = $result['email'];
+		# 账户安全分
+		$score = $result['safe_score'];
+		$name = $result['realname'];
+
+		$birthday = $result['birthday'];
+		$phone = $result['phone'];
+		$email = $result['email'];
+
+		$question = $result['question'];
+		$answer = $result['answer'];
+
 		return $this->fetch('/information',[
-			'gold'  => $res,
+			'gold'  => $findLevel,
 			'pic' =>$pic,
 			'username' => $username,
+			'phone'  => $phone,
+			'email'  => $email,
+			'safe_score' => $score,
 		]);
 	}
+	
+	# 更改头像
+	public function changePic()
+	{
+		$res = $this->user->changePic();
+		if ($res) {
+			return  $this->success('成功');
+		} else {
+			return  $this->error('失败');
+		}
+	}
 
+	# 更改用户信息
+	public function dochange()
+	{
+		$case = $this->user->change();
+		return $case;
+	}
 }

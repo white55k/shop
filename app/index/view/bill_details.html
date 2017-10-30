@@ -1,0 +1,23 @@
+{volist name="bill_details" id="bill_detail"}
+<tr>
+	<td class="img">
+		<i><img src="__IMAGES__/{$bill_detail->good->picture['small_picture']}"></i>
+	</td>
+	<td class="time">
+		<p> {$bill_detail.create_time}
+		</p>
+	</td>
+	<td class="title name">
+		<p class="content">
+			{$bill_detail->good['name']}
+		</p>
+	</td>
+
+	<td class="amount">
+		<span class="amount-pay">- {$bill_detail.money}</span>
+	</td>
+	<td class="operation">
+		删除
+	</td>
+</tr>
+{/volist}

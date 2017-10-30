@@ -11,7 +11,6 @@ use think\Controller;
 
 class Center extends Controller
 {
-	# 自定义一个构造函数
 	protected $collection;
 	protected $coupon;
 	protected $site;
@@ -51,8 +50,10 @@ class Center extends Controller
 			'order'    => $order,
 			'express'  => $inexpress,
 			'delivery' => $count_de,
-
+			'res_collection' => $res_collection,
+			'time' => time(),
+			'week' =>["日","一","二","三","四","五","六"],
+			'a' => date('w'),
 		]);
 	}
-	
 }

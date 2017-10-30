@@ -50,7 +50,7 @@ class Index extends Controller
     	$res_seckill = $this->good->seckillGood();
     	# 查询登陆用户基本信息
     	$res_user = $this->user->selectAll();
-    	
+    
     	$this->assign('res_menu', $res_menu);
     	$this->assign('res_figure', $res_figure);
     	$this->assign('res_good', $res_good);

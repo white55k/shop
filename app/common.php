@@ -56,5 +56,5 @@ function sendMessage($get,$code)
 	} else {
 		return false;
 	}
-
 }
+

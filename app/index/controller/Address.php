@@ -93,4 +93,18 @@ class Address extends Controller
 
     	return $this->fetch('/new_address');
     }
+
+	public function address()
+	{
+		# 搜索所有的收货地址
+		$res = $this->address->address();
+		return $this->fetch('/address',[
+			'res' => $res,
+		]);
+	}
+	public function addAddress()
+	{
+		$res = $this->address->addAddress();
+		return $res;
+	}
 }

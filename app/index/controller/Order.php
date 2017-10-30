@@ -62,4 +62,19 @@ class Order extends Controller
 
     	return $this->fetch('/success');
     }
+
+	# 首页
+	public function order()
+	{
+		$res = $this->order->findAll();
+		$close = $this->order->closeAll();
+		$ready = $this->order->readyAll();
+		$readySend = $this->order->readySend();
+		return $this->fetch('/order',[
+			'order' => $res,
+			'close' => $close,
+			'ready' => $ready,
+			'readySend' => $readySend,
+		]);
+	}
 }

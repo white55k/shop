@@ -259,13 +259,12 @@ return [
         '__CSS__'      => '/static/index/css',
         '__JS__'       => '/static/index/js',
         '__IMAGES__'   => '/static/index/images',
+        '__BASIC_IMAGES__'    => '/static/index/basic/images',
         '__BASIC_CSS__'    => '/static/index/basic/css',
         '__BASIC_JS__'    => '/static/index/basic/js',
         '__AMAZEUI_CSS__'   => '/static/index/AmazeUI-2.4.2/assets/css',
         '__AMAZEUI_JS__'    => '/static/index/AmazeUI-2.4.2/assets/js',
         '__AMAZEUI_FONTS__'   => '/static/index/AmazeUI-2.4.2/assets/fonts',
         '__AMAZEUI_I__'   => '/static/index/AmazeUI-2.4.2/assets/I',
-
-        
     ],
 ];

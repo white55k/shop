@@ -5,7 +5,7 @@ namespace app\index\model;
 use app\index\model\Center;
 use app\index\model\User;
 
-use think\model;
+use think\Model;
 use traits\model\SoftDelete;
 
 class Collection extends Model
