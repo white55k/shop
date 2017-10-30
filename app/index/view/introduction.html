@@ -36,6 +36,7 @@
 						<a href="{:url('user/reg')}" target="_top">免费注册</a>
 						{else /}
 						欢迎您！<a href="#" target="_top" class="h">{$Think.session.username ?? $Think.cookie.username}</a>
+						<a href="{:url('User/quiet')}">注销</a>
 						{/if}
 					</div>
 				</div>
@@ -48,10 +49,22 @@
 					<div class="menu-hd MyShangcheng"><a href="#" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a></div>
 				</div>
 				<div class="topMessage mini-cart">
-					<div class="menu-hd"><a id="mc-menu-hd" href="#" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span><strong id="J_MiniCartNum" class="h">0</strong></a></div>
+					<div class="menu-hd">
+						{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+							<a id="mc-menu-hd" href="{:url('User/login')}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
+						{else /}
+							<a id="mc-menu-hd" href="{:url('ShowCar/index')}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
+						{/if}
+					</div>
 				</div>
 				<div class="topMessage favorite">
-					<div class="menu-hd"><a href="#" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a></div>
+					<div class="menu-hd">
+						{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+							<a href="{:url('User/login')}" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a>
+						{else /}
+							<a href="{:url('Collect/index')}" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a>
+						{/if}
+					</div>
 			</ul>
 			</div>
 
@@ -60,11 +73,11 @@
 			<div class="nav white">
 				<div class="logo"><img src="__IMAGES__/logo.png" /></div>
 				<div class="logoBig">
-					<li><img src="__IMAGES__/logobig.png" /></li>
+					<li><img src="{$res_site.logo}" /></li>
 				</div>
 				<div class="search-bar pr">
 					<a name="index_none_header_sysc" href="#"></a>
-					<form>
+					<form action="{:url('Search/index')}" method="get">
 						<input id="searchInput" name="index_none_header_sysc" type="text" placeholder="搜索" autocomplete="off">
 						<input id="ai-topsearch" class="submit am-btn" value="搜索" index="1" type="submit">
 					</form>
@@ -270,7 +283,8 @@
 													{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
 													$(location).attr('href', "{:url('User/login')}");
 													{else /}
-													$.post('{:url("Coupon/addUser")}',{gid:1},function(data){
+
+													$.post('{:url("Coupon/addUser")}',{gid:{$Request.param.gid}},function(data){
 														if (!data) {
 															$('.gold-list li').html('优惠券已领完');
 														} else {
@@ -304,16 +318,25 @@
 							</div>
 							<li>
 								<div class="clearfix tb-btn tb-btn-buy theme-login">
-									<a id="LikBuy" title="点此按钮到下一步确认购买信息" href="#">立即购买</a>
+									<a id="LikBuy" title="点此按钮到下一步确认购买信息" href="{:url('Pay/show', ['gid'=>$Request.param.gid])}">立即购买</a>
 								</div>
 							</li>
 							<li>
 								<div class="clearfix tb-btn tb-btn-basket theme-login">
 									{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
-									<a id="LikBasket" title="加入购物车" href="{:url('User/login')}"></a>
+									<a id="LikBasket" title="加入购物车" href="{:url('User/login')}"><i></i>加入购物车</a>
 									{else /}
-									<a id="LikBasket" title="加入购物车" href="{:url('AddCar/index', ['gid'=>$res_good['gid']])}"><i></i>加入购物车</a>
+									<a id="LikBasket" title="加入购物车" href="{:url('AddCar/index', ['gid'=>input('param.gid')])}"><i></i>加入购物车</a>
 									{/if}
+								</div>
+							</li>
+							<li>
+								<div class="clearfix tb-btn theme-login">
+								{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+									<a title="收藏" href="{:url('User/login')}">收藏</a>
+								{else /}
+									<a title="收藏" href="{:url('Collect/addCollect', ['gid'=>input('param.gid')])}">收藏</a>
+								{/if}
 								</div>
 							</li>
 						</div>
@@ -336,7 +359,7 @@
 						     		{foreach $res_similar as $v}
 							      <li>
 							      	<div class="p-img">                    
-							      		<a  href="#"> <img class="" src="{$v->picture[0]['path_url']}"> </a>               
+							      		<a  href="#"> <img class="" src="{$v->picture['path_url']}"> </a>               
 							      	</div>
 							      	<div class="p-name"><a href="#">
 							      		{$v.keyword}
@@ -399,8 +422,8 @@
 											<h4>商品细节</h4>
 										</div>
 										<div class="twlistNews">
-										{foreach $res_picture as $v}
-											<img src="{$v.path_url}" />
+										{foreach $res_details as $v}
+											<img src="{$v}" />
 										{/foreach}
 										</div>
 									</div>
@@ -899,7 +922,7 @@
 											{foreach $res_all_similar as $v}
 											<li>
 												<div class="i-pic limit">
-													<img src="{$v->picture[0]['path_url']}" />
+													<img src="{$v->picture['path_url']}" />
 													<p>
 														<span>{$v.details}</span></p>
 													<p class="price fl">
@@ -940,25 +963,25 @@
 
 						<div class="clear"></div>
 
-						<div class="footer">
-							<div class="footer-hd">
+						<div class="footer ">
+							<div class="footer-hd ">
 								<p>
-									<a href="#">恒望科技</a>
+									<a href="# ">恒望科技</a>
 									<b>|</b>
-									<a href="#">商城首页</a>
+									<a href="{:url('Index/index')}">商城首页</a>
 									<b>|</b>
-									<a href="#">支付宝</a>
+									<a href="# ">支付宝</a>
 									<b>|</b>
-									<a href="#">物流</a>
+									<a href="# ">物流</a>
 								</p>
 							</div>
-							<div class="footer-bd">
+							<div class="footer-bd ">
 								<p>
-									<a href="#">关于恒望</a>
-									<a href="#">合作伙伴</a>
-									<a href="#">联系我们</a>
-									<a href="#">网站地图</a>
-									<em>© 2015-2025 Hengwang.com 版权所有</em>
+									<a href="# ">关于恒望</a>
+									<a href="# ">合作伙伴</a>
+									<a href="# ">联系我们</a>
+									<a href="# ">网站地图</a>
+									<em>({$res_site.record})</em>
 								</p>
 							</div>
 						</div>

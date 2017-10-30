@@ -1,5 +1,5 @@
 {foreach $res_address as $v}
-	<li class="user-addresslist defaultAddr">
+	<li class="user-addresslist user-address{$v.aid}">
 
 		<div class="address-left">
 			<div class="user DefaultAddr">
@@ -20,9 +20,6 @@
 
 				</span>
 			</div>
-			{eq name="$v.is_default" value="1"}
-			<ins class="deftip">默认地址</ins>
-			{/eq}
 		</div>
 		<div class="address-right">
 			<a href="person/address.html">
@@ -35,7 +32,7 @@
 			<span class="new-addr-bar hidden">|</span>
 			<a href="#" class="theme-login editAddr{$v.aid}">编辑</a>
 			<span class="new-addr-bar">|</span>
-			<a href="javascript:void(0);" onclick="delClick(this);">删除</a>
+			<a href="{:url('Address/delAddr', ['aid'=>$v->aid])}">删除</a>
 		</div>
 
 	</li>
@@ -49,6 +46,11 @@
 				$('.newAddr').html('变更地址');
 				$('#address-aid').val({$v.aid});
 			})
+			$('.user-address{$v.aid}').click(function(){
+				$.get("{:url('Address/defaultAddr')}", {aid:{$v.aid}}, function(data){
+					
+				});
+			});
 		});
 	</script>
 	<div class="per-border"></div>

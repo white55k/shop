@@ -12,12 +12,14 @@ class Consume extends Model
 
 	protected $pk = 'cid';
 
+	# 查询商品总销量
 	public function allCount()
 	{
 		$res = $this->where('good_id', 'eq', input('param.gid'))->count();
 		return $res;
 	}
 
+	# 查询商品月销量
 	public function monthCount()
 	{
 		$res = $this->where('good_id', input('param.gid'))
@@ -29,5 +31,10 @@ class Consume extends Model
 	public function good()
 	{
 		return $this->belongsTo('Good', 'good_id');
+	}
+
+	public function seckill()
+	{
+		return $this->belongsTo('Seckill', 'seckill_id');
 	}
 }

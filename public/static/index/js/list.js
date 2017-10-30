@@ -119,7 +119,6 @@ $(document).ready(function() {
 			if (parseInt(t.val()) != 1) {
 				$('#min').attr('disabled', false);
 			}
-			alert(1);
 		})
 		//数量减少操作
 	$("#min").click(function() {

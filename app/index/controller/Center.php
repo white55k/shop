@@ -2,24 +2,31 @@
 
 namespace app\index\controller;
 
+use app\index\model\Collection;
 use app\index\model\Coupon;
 use app\index\model\Order;
-use app\index\model\Collection;
+use app\index\model\Site;
+
 use think\Controller;
+
 class Center extends Controller
 {
 	# 自定义一个构造函数
-	protected $Coupon;
-	protected $Collection;
-	protected $Order;
+	protected $collection;
+	protected $coupon;
+	protected $site;
+	protected $order;
 
 	public function _initialize()
 	{
 		parent::_initialize();
-		$this->order = new Order;
-		$this->coupon = new Coupon;
 		$this->collection = new Collection;
+		$this->coupon = new Coupon;
+		$this->order = new Order;
+		$this->site = new Site;
 
+		$res_site = $this->site->selectAll();
+        $this->assign('res_site', $res_site);
 	}
 
 	# 个人中心

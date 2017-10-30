@@ -15,6 +15,7 @@
 		<link href="__CSS__/jsstyle.css" rel="stylesheet" type="text/css" />
 
 		<script type="text/javascript" src="__JS__/address.js"></script>
+		<script type="text/javascript" src="__JS__/province.js"></script>
 
 	</head>
 
@@ -30,22 +31,35 @@
 							<a href="{:url('user/reg')}" target="_top">免费注册</a>
 						{else /}
 							欢迎您！<a href="#" target="_top" class="h">{$Think.session.username ?? $Think.cookie.username}</a>
+							<a href="{:url('User/quiet')}">注销</a>
 						{/if}
 					</div>
 				</div>
 			</ul>
 			<ul class="message-r">
 				<div class="topMessage home">
-					<div class="menu-hd"><a href="#" target="_top" class="h">商城首页</a></div>
+					<div class="menu-hd"><a href="{:url('Index/index')}" target="_top" class="h">商城首页</a></div>
 				</div>
 				<div class="topMessage my-shangcheng">
 					<div class="menu-hd MyShangcheng"><a href="#" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a></div>
 				</div>
 				<div class="topMessage mini-cart">
-					<div class="menu-hd"><a id="mc-menu-hd" href="#" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span><strong id="J_MiniCartNum" class="h">0</strong></a></div>
+					<div class="menu-hd">
+						{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+							<a id="mc-menu-hd" href="{:url('User/login')}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
+						{else /}
+							<a id="mc-menu-hd" href="{:url('ShowCar/index')}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
+						{/if}
+					</div>
 				</div>
 				<div class="topMessage favorite">
-					<div class="menu-hd"><a href="#" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a></div>
+					<div class="menu-hd">
+						{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+							<a href="{:url('User/login')}" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a>
+						{else /}
+							<a href="{:url('Collect/index')}" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a>
+						{/if}
+					</div>
 			</ul>
 			</div>
 
@@ -54,12 +68,12 @@
 			<div class="nav white">
 				<div class="logo"><img src="__IMAGES__/logo.png" /></div>
 				<div class="logoBig">
-					<li><img src="__IMAGES__/logobig.png" /></li>
+					<li><img src="{$res_site.logo}" /></li>
 				</div>
 
 				<div class="search-bar pr">
 					<a name="index_none_header_sysc" href="#"></a>
-					<form>
+					<form action="{:url('Search/index')}" method="get">
 						<input id="searchInput" name="index_none_header_sysc" type="text" placeholder="搜索" autocomplete="off">
 						<input id="ai-topsearch" class="submit am-btn" value="搜索" index="1" type="submit">
 					</form>
@@ -78,7 +92,7 @@
 						<div class="clear"></div>
 						<ul class="showAddress">
 							<div class="per-border"></div>
-							{include file="new_address"}
+							<div class="new_address">{include file="new_address"}</div>
 						</ul>
 
 						<div class="clear"></div>
@@ -144,7 +158,7 @@
 												<li class="td td-item">
 													<div class="item-pic">
 														<a href="#" class="J_MakePoint">
-															<img src="{$v->good->picture[0]['path_url']}" class="itempic J_ItemImg"></a>
+															<img src="{$v->good->picture['path_url']}" class="itempic J_ItemImg" style="width:80px; height:80px;"></a>
 													</div>
 													<div class="item-info">
 														<div class="item-basic-info">
@@ -173,7 +187,7 @@
 											</li>
 											<li class="td td-sum">
 												<div class="td-inner">
-													<em tabindex="0" class="J_ItemSum number">{$v->quantity * $v->good['money']}</em>
+													<em tabindex="0" class="J_ItemSum number number{$v.cid}">{$v->quantity * $v->good['money']}</em>
 												</div>
 											</li>
 											<li class="td td-oplist">
@@ -219,47 +233,17 @@
 
 									<span class="coupon-title">优惠券</span>
 									<select data-am-selected>
-										<option value="a">
+									{foreach $res_coupon as $v}
+										<option value="{$v.cid}">
 											<div class="c-price">
-												<strong>￥8</strong>
+												<strong>&yen;{$v.face_value}</strong>
 											</div>
 											<div class="c-limit">
-												【消费满95元可用】
+												{$v.descrbe}
 											</div>
 										</option>
-										<option value="b" selected>
-											<div class="c-price">
-												<strong>￥3</strong>
-											</div>
-											<div class="c-limit">
-												【无使用门槛】
-											</div>
-										</option>
+									{/foreach}
 									</select>
-								</li>
-
-								<li class="td td-bonus">
-
-									<span class="bonus-title">红包</span>
-									<select data-am-selected>
-										<option value="a">
-											<div class="item-info">
-												¥50.00<span>元</span>
-											</div>
-											<div class="item-remainderprice">
-												<span>还剩</span>10.40<span>元</span>
-											</div>
-										</option>
-										<option value="b" selected>
-											<div class="item-info">
-												¥50.00<span>元</span>
-											</div>
-											<div class="item-remainderprice">
-												<span>还剩</span>50.00<span>元</span>
-											</div>
-										</option>
-									</select>
-
 								</li>
 
 							</div>
@@ -268,9 +252,10 @@
 							<!--含运费小计 -->
 							<div class="buy-point-discharge ">
 								<p class="price g_price ">
-									合计（含运费） <span>¥</span><em class="pay-sum">244.00</em>
+									合计（含运费） <span>&yen;</span><em class="pay-sum">{$res_money}</em>
 								</p>
 							</div>
+							
 
 							<!--信息 -->
 							<div class="order-go clearfix">
@@ -278,35 +263,20 @@
 									<div class="box">
 										<div tabindex="0" id="holyshit267" class="realPay"><em class="t">实付款：</em>
 											<span class="price g_price ">
-                                    <span>¥</span> <em class="style-large-bold-red " id="J_ActualFee">244.00</em>
+                                    <span>¥</span> <em class="style-large-bold-red " id="J_ActualFee">{$res_money}</em>
 											</span>
 										</div>
 
-										<div id="holyshit268" class="pay-address">
-
-											<p class="buy-footer-address">
-												<span class="buy-line-title buy-line-title-type">寄送至：</span>
-												<span class="buy--address-detail">
-								   <span class="province">湖北</span>省
-												<span class="city">武汉</span>市
-												<span class="dist">洪山</span>区
-												<span class="street">雄楚大道666号(中南财经政法大学)</span>
-												</span>
-												</span>
-											</p>
-											<p class="buy-footer-address">
-												<span class="buy-line-title">收货人：</span>
-												<span class="buy-address-detail">   
-                                         <span class="buy-user">艾迪 </span>
-												<span class="buy-phone">15871145629</span>
-												</span>
-											</p>
-										</div>
+										
 									</div>
 
 									<div id="holyshit269" class="submitOrder">
 										<div class="go-btn-wrap">
-											<a id="J_Go" href="success.html" class="btn-go" tabindex="0" title="点击此按钮，提交订单">提交订单</a>
+										{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+											<a id="J_Go" href="{:url('User/login')}" class="btn-go" tabindex="0" title="点击此按钮，提交订单">提交订单</a>
+										{else /}
+											<a id="J_Go" href="{:url('Order/index', ['cid'=>input('param.cid'),'money'=>$res_money])}" class="btn-go" tabindex="0" title="点击此按钮，提交订单">提交订单</a>
+										{/if}
 										</div>
 									</div>
 									<div class="clear"></div>
@@ -317,25 +287,25 @@
 						<div class="clear"></div>
 					</div>
 				</div>
-				<div class="footer">
-					<div class="footer-hd">
+				<div class="footer ">
+					<div class="footer-hd ">
 						<p>
-							<a href="#">恒望科技</a>
+							<a href="# ">恒望科技</a>
 							<b>|</b>
-							<a href="#">商城首页</a>
+							<a href="{:url('Index/index')}">商城首页</a>
 							<b>|</b>
-							<a href="#">支付宝</a>
+							<a href="# ">支付宝</a>
 							<b>|</b>
-							<a href="#">物流</a>
+							<a href="# ">物流</a>
 						</p>
 					</div>
-					<div class="footer-bd">
+					<div class="footer-bd ">
 						<p>
-							<a href="#">关于恒望</a>
-							<a href="#">合作伙伴</a>
-							<a href="#">联系我们</a>
-							<a href="#">网站地图</a>
-							<em>© 2015-2025 Hengwang.com 版权所有</em>
+							<a href="# ">关于恒望</a>
+							<a href="# ">合作伙伴</a>
+							<a href="# ">联系我们</a>
+							<a href="# ">网站地图</a>
+							<em>({$res_site.record})</em>
 						</p>
 					</div>
 				</div>
@@ -370,17 +340,14 @@
 						<div class="am-form-group">
 							<label for="user-phone" class="am-form-label">所在地</label>
 							<div class="am-form-content address">
-								<select data-am-selected>
-									<option value="浙江省">浙江省</option>
-									<option value="湖北省">湖北省</option>
+								<select id="province">
+									<option value="1">-选择省份-</option>
 								</select>
-								<select data-am-selected>
-									<option value="温州市">温州市</option>
-									<option value="武汉市">武汉市</option>
+								<select id="city">
+									<option value="1">-选择城市-</option>
 								</select>
-								<select data-am-selected>
-									<option value="瑞安区">瑞安区</option>
-									<option value="洪山区">洪山区</option>
+								<select id="country">
+									<option value="1">-选择区/县-</option>
 								</select>
 							</div>
 						</div>
@@ -412,12 +379,20 @@
 							var address = $('#user-intro').val();
 							if ($('.newAddr').html() == '新增地址') {
 								$.post("{:url('Address/index')}",{consignee:consignee, phone:phone, province:province, city:city, country:country, address:address},function(data){
+									if (!data) {
+										alert('格式错误');
+										return false;
+									}
 									$('.showAddress').html('');
 									$('.showAddress').append(data);
 								});
 							} else {
 								var aid = $('#address-aid').val();
 								$.post("{:url('Address/updateAddr')}",{aid:aid, consignee:consignee, phone:phone, province:province, city:city, country:country, address:address},function(data){
+									if (!data) {
+										alert('格式错误');
+										return false;
+									}
 									$('.showAddress').html('');
 									$('.showAddress').append(data);
 								});

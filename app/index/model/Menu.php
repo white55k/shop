@@ -12,6 +12,7 @@ class Menu extends Model
 
 	protected $pk = 'mid';
 
+	# 查询所有菜单
 	public function selectAll()
 	{
 		$res = $this->all();

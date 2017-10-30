@@ -4,12 +4,12 @@
 <meta charset="utf-8"/>
 <title>后台管理系统</title>
 <meta name="author" content="DeathGhost" />
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="__CSS__/style.css">
 <!--[if lt IE 9]>
 <script src="js/html5.js"></script>
 <![endif]-->
-<script src="js/jquery.js"></script>
-<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="__JS__/jquery.js"></script>
+<script src="__JS__/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
 
 	(function($){
@@ -37,13 +37,13 @@
 <body>
 <!--header-->
 <header>
- <h1><img src="images/admin_logo.png"/></h1>
+ <h1><img src="__IMAGES__/admin_logo.png"/></h1>
  <ul class="rt_nav">
-  <li><a href="http://www.mycodes.net" target="_blank" class="website_icon">站点首页</a></li>
+   <li><a href="{:url('index/Index/index')}" class="website_icon">站点首页</a></li>
   <li><a href="#" class="clear_icon">清除缓存</a></li>
   <li><a href="#" class="admin_icon">DeathGhost</a></li>
   <li><a href="#" class="set_icon">账号设置</a></li>
-  <li><a href="login.html" class="quit_icon">安全退出</a></li>
+  <li><a href="{:url('Index/quit')}" class="quit_icon">安全退出</a></li>
  </ul>
 </header>
 <!--aside nav-->
@@ -55,38 +55,34 @@
    <dl>
     <dt>常用布局示例</dt>
     <!--当前链接则添加class:active-->
-    <dd><a href="product_list.html" class="active">商品列表示例</a></dd>
-    <dd><a href="product_detail.html">商品详情示例</a></dd>
-    <dd><a href="recycle_bin.html">商品回收站示例</a></dd>
+    <dd><a href="{:url('ShowGood/index')}">商品列表</a></dd>
    </dl>
   </li>
   <li>
    <dl>
     <dt>订单信息</dt>
-    <dd><a href="order_list.html">订单列表示例</a></dd>
-    <dd><a href="order_detail.html">订单详情示例</a></dd>
+    <dd><a href="{:url('Order/index')}">订单列表</a></dd>
    </dl>
   </li>
   <li>
    <dl>
     <dt>会员管理</dt>
-    <dd><a href="user_list.html">会员列表示例</a></dd>
-    <dd><a href="user_detail.html">添加会员（详情）示例</a></dd>
-    <dd><a href="user_rank.html">会员等级示例</a></dd>
-    <dd><a href="adjust_funding.html">会员资金管理示例</a></dd>
+    <dd><a href="{:url('ShowUser/show')}">会员列表</a></dd>
+    <dd><a href="{:url('Level/index')}">会员等级</a></dd>
+    <dd><a href="adjust_funding.html">会员资金管理</a></dd>
    </dl>
   </li>
   <li>
    <dl>
     <dt>基础设置</dt>
-    <dd><a href="setting.html">站点基础设置示例</a></dd>
+    <dd><a href="{:url('Site/index')}">站点基础设置</a></dd>
+    <dd><a href="{:url('Figure/index')}">轮播图设置</a></dd>
    </dl>
   </li>
   <li>
    <dl>
-    <dt>配送与支付设置</dt>
-    <dd><a href="express_list.html">配送方式</a></dd>
-    <dd><a href="pay_list.html">支付方式</a></dd>
+    <dt>财务管理</dt>
+    <dd><a href="{:url('Coupon/index')}">优惠券</a></dd>
    </dl>
   </li>
   <li>
@@ -108,59 +104,47 @@
        <h2 class="fl">站点基础设置</h2>
       </div>
      <section>
+     <form action="{:url('Site/updateSite')}" method="post" enctype="multipart/form-data">
       <ul class="ulColumn2">
        <li>
+         <span class="item_name" style="width:120px;"></span>
+         <img src="{$res_site.logo}">
+       </li>
+       <li>
         <span class="item_name" style="width:120px;">站点名称：</span>
-        <input type="text" class="textbox textbox_225" placeholder="站点名称..."/>
-        <span class="errorTips">一般不超过80个字符</span>
+        <input type="text" class="textbox textbox_225" name="name" value="{$res_site.name}" placeholder="站点名称..."/>
        </li>
        <li>
         <span class="item_name" style="width:120px;">上传logo：</span>
-        <label class="uploadImg">
-         <input type="file"/>
-         <span>上传站点logo</span>
-        </label>
+         <input type="file" name="logo" />
        </li>
        <li>
         <span class="item_name" style="width:120px;">站点描述：</span>
-        <input type="text" class="textbox textbox_295" placeholder="站点描述..."/>
-        <span class="errorTips">一般不超过200个字符</span>
+        <input type="text" name="descrbe" class="textbox textbox_295" value="{$res_site.descrbe}" placeholder="站点描述..."/>
        </li>
        <li>
         <span class="item_name" style="width:120px;">关键词：</span>
-        <input type="text" class="textbox textbox_295" placeholder="多个关键词用”,“或”|“隔开..."/>
-        <span class="errorTips">一般不超过100个字符</span>
+        <input type="text" class="textbox textbox_295" name="keyword" value="{$res_site.keyword}" placeholder="多个关键词用”,“或”|“隔开..."/>
        </li>
        <li>
-        <span class="item_name" style="width:120px;">公司地址：</span>
-        <select class="select">
-         <option>选择省份</option>
-        </select>
-        <select class="select">
-         <option>选择城市</option>
-        </select>
-        <select class="select">
-         <option>选择区/县</option>
-        </select>
-       </li>
-       <li>
-        <span class="item_name" style="width:120px;">详细地址：</span>
-        <input type="text" class="textbox textbox_295" placeholder="详细地址..."/>
+        <span class="item_name" style="width:120px;">备案号：</span>
+        <input type="text" class="textbox textbox_295" name="record" value="{$res_site.record}" placeholder="多个关键词用”,“或”|“隔开..."/>
        </li>
        <li>
         <span class="item_name" style="width:120px;">关闭站点：</span>
-        <label class="single_selection"><input type="radio" name="name"/>否</label>
-        <label class="single_selection"><input type="radio" name="name"/>是</label>
+        <label class="single_selection"><input type="radio" name="is_open" value="1" checked="checked" />否</label>
+        <label class="single_selection"><input type="radio" name="is_open" value="0" />是</label>
        </li>
        <li>
         <span class="item_name" style="width:120px;">关闭站点：</span>
-        <textarea placeholder="关闭站点原因" class="textarea" style="height:50px;width:640px;"></textarea>
+        <textarea placeholder="关闭站点原因" name="close_describe" class="textarea" style="height:50px;width:640px;">{$res_site.close_describe}</textarea>
        </li>
        <li>
         <span class="item_name" style="width:120px;"></span>
         <input type="submit" class="link_btn" value="保存"/>
        </li>
       </ul>
+      </form>
      </section>
  </div>
 </section>

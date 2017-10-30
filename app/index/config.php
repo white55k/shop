@@ -14,7 +14,6 @@ return [
     // | 应用设置
     // +----------------------------------------------------------------------
 
-<<<<<<< HEAD
     // 应用命名空间
     'app_namespace'          => 'app',
     // 应用调试模式
@@ -140,20 +139,9 @@ return [
         // 标签库标签结束标记
         'taglib_end'   => '}',
     ],
-
-    // 视图输出字符串内容替换
-    'view_replace_str' => [
-        '__CSS__'           =>  '/static/index/css',
-        '__JS__'            =>  '/static/index/js',
-        '__IMAGES__'        =>  '/static/index/images',
-        '__AMAZEUI_CSS__'   =>  '/static/index/AmazeUI-2.4.2/assets/css',
-        '__AMAZEUI_JS__'    =>  '/static/index/AmazeUI-2.4.2/assets/js',
-        '__BASIC_CSS__'      =>  '/static/index/basic/css',
-        '__BASIC_JS__'       =>  '/static/index/basic/js',
-    ],
     // 默认跳转页面对应的模板文件
-    'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
-    'dispatch_error_tmpl'    => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
+    'dispatch_success_tmpl'  => APP_PATH . 'index' . DS . 'view/jump_wait.html',
+    'dispatch_error_tmpl'    => APP_PATH . 'index' . DS . 'view/jump_wait.html',
 
     // +----------------------------------------------------------------------
     // | 异常及错误设置
@@ -265,21 +253,19 @@ return [
         // 验证成功后是否重置
         'reset'    => true
     ],
-=======
 
     // 视图输出字符串内容替换
     'view_replace_str'       => [
         '__CSS__'      => '/static/index/css',
         '__JS__'       => '/static/index/js',
         '__IMAGES__'   => '/static/index/images',
-        '__BASIC__'    => '/static/index/basic',
+        '__BASIC_CSS__'    => '/static/index/basic/css',
+        '__BASIC_JS__'    => '/static/index/basic/js',
         '__AMAZEUI_CSS__'   => '/static/index/AmazeUI-2.4.2/assets/css',
         '__AMAZEUI_JS__'    => '/static/index/AmazeUI-2.4.2/assets/js',
-        '__AMAZEUI_FONTS'   => '/static/index/AmazeUI-2.4.2/assets/fonts',
-        '__AMAZEUI_I'   => '/static/index/AmazeUI-2.4.2/assets/I',
+        '__AMAZEUI_FONTS__'   => '/static/index/AmazeUI-2.4.2/assets/fonts',
+        '__AMAZEUI_I__'   => '/static/index/AmazeUI-2.4.2/assets/I',
 
         
     ],
-    
->>>>>>> 6bff5109f783c7916846746c205929f1cdde21a9
 ];

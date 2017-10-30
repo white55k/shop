@@ -1,8 +1,8 @@
 <?php
 
-namespace app\index\controller;
+namespace app\admin\controller;
 
-use app\index\model\User;
+use app\admin\model\User;
 use think\Controller;
 
 class Index extends Controller
@@ -15,16 +15,16 @@ class Index extends Controller
 		$this->user = new User;
 	}
 
+    # 登陆界面
     public function index()
     {
-        /*$res = $this->user->index();
-        $data = [
-			'captcha' => '1234'
-		];
-		$res = $this->validate($data, [
-			'captcha|验证码' => 'require|captcha'
-		]);
-		echo $res;*/
         return $this->fetch('/index');
+    }
+
+    # 退出操作
+    public function quit()
+    {
+    	session('aid', null);
+    	return $this->fetch('/index');
     }
 }

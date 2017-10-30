@@ -1,0 +1,52 @@
+<table class="table">
+ <tr>
+  <th>订单编号</th>
+  <th>收件人</th>
+  <th>联系电话</th>
+  <th>收件人地址</th>
+  <th>订单金额</th>
+  <th>配送方式</th>
+  <th>操作</th>
+ </tr>
+ {foreach $res_order as $v}
+ <tr>
+  <td class="center">{$v.order_number}</td>
+  <td class="center">{$v.consignee}</td>
+  <td class="center">{$v.phone}</td>
+  <td>
+   <address style="overflow: hidden;">{$v.address}</address>
+  </td>
+  <td class="center"><strong class="rmb_icon">{$v.payable}</strong></td>
+  <td class="center">
+    {if condition="($v->is_pay == 0)"}未支付
+    {elseif condition="($v->is_pay == 1)"/}已支付
+    {else /}到付
+    {/if}
+  </td>
+  <td class="center">
+   <a href="#" title="查看订单" class="link_icon" target="_blank">&#118;</a>
+   <a href="#" title="删除" class="link_icon">&#100;</a>
+  </td>
+ </tr>
+ {/foreach}
+</table>
+{$res_order->render()}
+<script type="text/javascript">
+  $(function(){
+$(".am-pagination a").click(function() { 
+  var page = $(this).attr("href");
+  getPage(page);
+  return false;
+    });
+  }) ;
+  function getPage(url){
+  $.get(url, function(result){
+    if (result.length == 2) {
+      $('.rtable').html(result[1]);
+    } else {
+      $('.rtable').html(result);
+    }
+    /*$(".am-pagination").html(result);*/
+  });
+  }
+</script>

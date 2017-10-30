@@ -12,6 +12,7 @@ class Figure extends Model
 
 	protected $pk = 'fid';
 
+	# 查询轮播图
 	public function selectAll()
 	{
 		$res = $this->all();

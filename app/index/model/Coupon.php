@@ -1,8 +1,8 @@
-<<<<<<< HEAD
 <?php
 
 namespace app\index\model;
 
+use app\index\model\Center;
 use app\index\model\User;
 
 use think\Model;
@@ -15,14 +15,16 @@ class Coupon extends Model
 
 	protected $pk = 'cid';
 
+	# 领取优惠券
 	public function addUser()
 	{
 		$user = new User;
-		$username = session('user') ? session('user') : cookie('user');
+		$username = session('username') ? session('username') : cookie('username');
 		$res_uid = $user->getByUsername($username)->uid;
 		$res = $this->where('good_id', 'eq', input('param.gid'))
 			 ->where('is_enable', 'eq', 0)
 			 ->where('user_id', 'eq', 0)
+			 ->where('past_time', 'gt', time())
 			 ->find();
 		if (!$res) {
 			return 0;
@@ -32,27 +34,7 @@ class Coupon extends Model
 		return $res;
 	}
 
-	public function good()
-	{
-		return $this->hasMany('Good', 'good_id');
-	}
-
-	public function user()
-	{
-		return $this->hasMany('User', 'user_id');
-	}
-}
-=======
-<?php
-
-namespace app\index\model;
-
-use app\index\model\Center;
-use app\index\model\User;
-use think\Model;
-
-class Coupon extends Model
-{
+	# 查询用户所有优惠券信息
 	public function selectAll()
 	{
 	    $username = session('username') ? session('username') : cookie('username');
@@ -62,6 +44,14 @@ class Coupon extends Model
 		return $res;
 		
 	}
-	
+
+	public function good()
+	{
+		return $this->hasMany('Good', 'good_id');
+	}
+
+	public function user()
+	{
+		return $this->belongsTo('User', 'user_id');
+	}
 }
->>>>>>> 6bff5109f783c7916846746c205929f1cdde21a9

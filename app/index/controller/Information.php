@@ -2,19 +2,25 @@
 
 namespace app\index\controller;
 
+use app\index\model\Site;
 use app\index\model\User as UserModel;
 
 use think\Controller;
 use think\Db;
+
 class Information extends Controller
 {
-	# 自定义一个构造函数
+	protected $site;
 	protected $user;
 
 	public function _initialize()
 	{
 		parent::_initialize();
+		$this->site = new Site;
 		$this->user = new UserModel;
+
+		$res_site = $this->site->selectAll();
+        $this->assign('res_site', $res_site);
 	}
 	public function information()
 	{

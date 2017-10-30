@@ -16,4 +16,9 @@ class Taste extends Model
 	{
 		return $this->belongsTo('Good', 'good_id');
 	}
+
+	public function seckill()
+	{
+		return $this->belongsTo('Seckill', 'seckill_id');
+	}
 }

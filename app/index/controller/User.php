@@ -1,37 +1,25 @@
 <?php 
 namespace app\index\controller;
 
+use app\index\model\Site;
 use app\index\model\User as UserModel;
+
 use think\Controller;
-use think\Session;
 use think\Validate;
 
 class User extends Controller
 {
-	//自定义一个构造函数
-	
+	protected $site;
 	protected $user;
 
 	public function _initialize()
 	{
 		parent::_initialize();
-		
+		$this->site = new Site;
 		$this->user = new UserModel;
 	
-	}
-	# 记住密码
-	public function remember()
-	{
-		$name = input('post.name');
-		$password = input('post.password');
-		cookie('username',$name,86400*7);
-		cookie('password',$password,86400*7);
-	}
-	#取消记住密码
-	public function unremember()
-	{
-		session('username','null');
-		session('password','null');
+		$res_site = $this->site->selectAll();
+        $this->assign('res_site', $res_site);
 	}
 
 	# 登录主页
@@ -53,13 +41,24 @@ class User extends Controller
 	# 发送邮箱验证码
 	public function send()
 	{
-		$email = input('post.email');
+		$post = request()->post();
+		$validate = new Validate([
+			'email' => 'require|email'
+		]);
+		if (!$validate->check($post)) {
+			return '格式错误';
+		}
+		$res = $this->user->checkMail();
+		if ($res) {
+			return '邮箱已存在';
+		}
 		$code = substr(str_shuffle(md5(time())), 2,6);
-		$newcode = sendEmail($email,$code);
+		$newcode = sendEmail($post['email'],$code);
 		if($newcode){
 			session('code',$code);
+			return '邮件已发送';
 		}else{
-			return '邮件发送失败';
+			return '邮箱发送失败,请认真核对您的邮箱号码';
 		}
 	}
 	# 邮箱验证注册
@@ -70,8 +69,8 @@ class User extends Controller
 			'password' => 'require|max:32|min:8|alphaNum'
 		]);
 		$data = [
-			'email' => input('post.email'),
-			'password' => input('post.password')
+			'email' => htmlspecialchars(input('post.email')),
+			'password' => htmlspecialchars(input('post.password'))
 		];
 		if (!$validate->check($data)) {
 			return( $validate->getError());
@@ -86,11 +85,22 @@ class User extends Controller
 	//获取手机验证码
 	public function phonemes()
 	{
-		$code=substr(str_shuffle('0123456789'), 2,6);
-		$get = input('post.phone');
-		$phonemes = sendMessage($get,$code);
+		$code = substr(str_shuffle('0123456789'), 2,6);
+		$post = request()->post();
+		$validate = new Validate([
+			'phone'	=>	'require|number|between:10000000000,20000000000',
+		]);
+		if (!$validate->check($post)) {
+			return '格式错误';
+		}
+		$res = $this->user->checkPhone();
+		if ($res) {
+			return '手机号已存在';
+		}
+		$phonemes = sendMessage($post['phone'],$code);
 		if ($phonemes) {
 			session('code_phone',$code);
+			return '验证码已发送';
 		} else {
 			return "短信发送失败,请认真核对您的手机号码";
 		}
@@ -103,8 +113,8 @@ class User extends Controller
 			'password' => 'require|max:32|min:8|alphaDash'
 		]);
 		$data = [
-			'phone' => input('post.phone'),
-			'password' => input('post.password')
+			'phone' => htmlspecialchars(input('post.phone')),
+			'password' => htmlspecialchars(input('post.password'))
 		];
 		if (!$validate->check($data)) {
 			return( $validate->getError());
@@ -113,6 +123,15 @@ class User extends Controller
 			return $res;
 		}
 
+	}
+
+	# 注销登陆
+	public function quiet()
+	{
+		session('username', null);
+		cookie('username', null);
+
+		return $this->fetch('/login');
 	}
 
 	

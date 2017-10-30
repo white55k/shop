@@ -140,6 +140,10 @@ return [
         'taglib_end'   => '}',
     ],
 
+    'http_exception_template' => [
+        404     =>  APP_PATH . '404.html'
+    ],
+
     // 视图输出字符串内容替换
     'view_replace_str'       => [],
     // 默认跳转页面对应的模板文件

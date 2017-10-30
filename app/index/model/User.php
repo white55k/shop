@@ -11,12 +11,18 @@ class User extends Model
 	{
 		$name = input('post.name');
 		$password = md5(input('post.password'));
-		$res = $this->where('username','eq',$name)->find();
+		$check = input('param.checked');
+		$res = $this->where('username','eq',$name)
+			 ->whereOr('phone', 'eq', $name)
+			 ->whereOr('email', 'eq', $name)
+			 ->find();
 		if (!$res) {
 			return 1; //用户名不存在
 		} else if (strcmp($password, $res->password) == 0){
-			session('username',$name);
-			session('password',$password);
+			if ($check) {
+				cookie('username', $res->username, 86400*7);
+			}
+			session('username', $res->username);
 			return 3;  //ok
 		} else {
 			return 2;  //密码错误
@@ -61,6 +67,26 @@ class User extends Model
 		}
 	}
 
+	# 检查邮箱格式
+	public function checkMail()
+	{
+		return $this->where('email', 'eq', input('post.email'))->find();
+	}
+
+	# 检查手机格式
+	public function checkPhone()
+	{
+		return $this->where('phone', 'eq', input('post.phone'))->find();
+	}
+
+	# 查询用户所有信息
+	public function selectAll()
+	{
+		$username = session('username') ? session('username') : cookie('useranme');
+		$res = $this->where('username', 'eq', $username)->find();
+		return $res;
+	}
+
 	public function address()
 	{
 		return $this->hasMany('Address', 'user_id');
@@ -71,9 +97,19 @@ class User extends Model
 		return $this->hasOne('Car', 'user_id');
 	}
 
+	public function collection()
+	{
+		return $this->hasMany('Collection', 'user_id');
+	}
+
 	public function coupon()
 	{
-		return $this->belongsTo('Coupon', 'user_id');
+		return $this->hasMany('Coupon', 'user_id');
+	}
+
+	public function foot()
+	{
+		return $this->hasMany('Foot', 'user_id');
 	}
 
 
