@@ -7,13 +7,15 @@
 
 		<title>地址管理</title>
 
-		<link href="AmazeUI-2.4.2/assets/css/admin.css" rel="stylesheet" type="text/css">
-		<link href="AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/admin.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/amazeui.css" rel="stylesheet" type="text/css">
 
-		<link href="css/personal.css" rel="stylesheet" type="text/css">
-		<link href="css/addstyle.css" rel="stylesheet" type="text/css">
-		<script src="AmazeUI-2.4.2/assets/js/jquery.min.js" type="text/javascript"></script>
-		<script src="AmazeUI-2.4.2/assets/js/amazeui.js"></script>
+		<link href="__CSS__/personal.css" rel="stylesheet" type="text/css">
+		<link href="__CSS__/addstyle.css" rel="stylesheet" type="text/css">
+		<script src="__AMAZEUI_JS__/jquery.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="__JS__/province.js"></script>
+		<script src="__AMAZEUI_JS__/amazeui.js"></script>
+		
 
 	</head>
 
@@ -34,16 +36,34 @@
 						</ul>
 						<ul class="message-r">
 							<div class="topMessage home">
-								<div class="menu-hd"><a href="index.html" target="_top" class="h">商城首页</a></div>
+								<div class="menu-hd"><a href="{:url('Index/index')}" target="_top" class="h">商城首页</a></div>
 							</div>
 							<div class="topMessage my-shangcheng">
-								<div class="menu-hd MyShangcheng"><a href="个人中心.html" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a></div>
+								<div class="menu-hd MyShangcheng">
+								{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+									<a href="" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a>
+								{else /}
+									<a href="{:url('Center/center')}" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a>
+								{/if}
+								</div>
 							</div>
 							<div class="topMessage mini-cart">
-								<div class="menu-hd"><a id="mc-menu-hd" href="#" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span><strong id="J_MiniCartNum" class="h">0</strong></a></div>
+								<div class="menu-hd">
+									{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+										<a id="mc-menu-hd" href="{:url('User/login')}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
+									{else /}
+										<a id="mc-menu-hd" href="{:url('ShowCar/index')}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
+									{/if}
+								</div>
 							</div>
 							<div class="topMessage favorite">
-								<div class="menu-hd"><a href="#" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a></div>
+								<div class="menu-hd">
+									{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+										<a href="{:url('User/login')}" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a>
+									{else /}
+										<a href="{:url('Collect/index')}" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a>
+									{/if}
+								</div>
 						</ul>
 						</div>
 
@@ -51,7 +71,7 @@
 
 						<div class="nav white">
 							<div class="logoBig">
-								<li><img src="images/logobig.png" /></li>
+								<li><img src="__IMAGES__/logobig.png" /></li>
 							</div>
 
 							<div class="search-bar pr">
@@ -68,7 +88,6 @@
 				</div>
 			</article>
 		</header>
-
 		<div class="nav-table">
 			<div class="long-title"><span class="all-goods">全部分类</span></div>
 			<div class="nav-cont">
@@ -98,70 +117,56 @@
 						</div>
 						<hr/>
 						<ul class="am-avg-sm-1 am-avg-md-3 am-thumbnails">
+							{volist name = "res" id = "center"}
+							<li class="user-addresslist ">
+								<span class="new-option-r checked{$center.aid}"><i class="am-icon-check-circle "></i>默认地址</span>
+								{if condition="$center.is_default eq 1"}
+								<span style="float: right;margin-top: -15px;margin-right: -8px"><i class="am-icon-check-circle "></i>默认地址</span>
+								{/if}
+								<p class="new-tit new-p-re">
+									<span class="new-txt">{$center.consignee}</span>
+									<span class="new-txt-rd2">{$center.phone}</span>
+								</p>
+								<div class="new-mu_l2a new-p-re">
+									<p class="new-mu_l2cw">
+										<span class="title">地址：</span>
+										<span class="province">{$center.province}</span>
+										<span class="city">{$center.city}</span>
+										<span class="dist">{$center.country}</span>
+										<span class="street">({$center.address})</span></p>
+								</div>
+								<div class="new-addr-btn">
+									<a href="{:url('ChangeAdd/changeAdd', ['aid'=>$center->aid])}"><i class="am-icon-edit"></i>编辑</a>
+									<span class="new-addr-bar">|</span>
+									<a href="javascript:void(0);" id="isdelome{$center.aid}"><i class="am-icon-trash"></i>删除</a>
+								</div>
+							</li>
+							<script type="text/javascript">
+								$(document).ready(function(){
+									$(".checked{$center.aid}").click(function(){
+										var aid = {$center.aid};
 
-							<li class="user-addresslist defaultAddr">
-								<span class="new-option-r"><i class="am-icon-check-circle"></i>默认地址</span>
-								<p class="new-tit new-p-re">
-									<span class="new-txt">小叮当</span>
-									<span class="new-txt-rd2">159****1622</span>
-								</p>
-								<div class="new-mu_l2a new-p-re">
-									<p class="new-mu_l2cw">
-										<span class="title">地址：</span>
-										<span class="province">湖北</span>省
-										<span class="city">武汉</span>市
-										<span class="dist">洪山</span>区
-										<span class="street">雄楚大道666号(中南财经政法大学)</span></p>
-								</div>
-								<div class="new-addr-btn">
-									<a href="#"><i class="am-icon-edit"></i>编辑</a>
-									<span class="new-addr-bar">|</span>
-									<a href="javascript:void(0);" onClick="delClick(this);"><i class="am-icon-trash"></i>删除</a>
-								</div>
-							</li>
-
-							<li class="user-addresslist">
-								<span class="new-option-r"><i class="am-icon-check-circle"></i>设为默认</span>
-								<p class="new-tit new-p-re">
-									<span class="new-txt">小叮当</span>
-									<span class="new-txt-rd2">159****1622</span>
-								</p>
-								<div class="new-mu_l2a new-p-re">
-									<p class="new-mu_l2cw">
-										<span class="title">地址：</span>
-										<span class="province">湖北</span>省
-										<span class="city">武汉</span>市
-										<span class="dist">洪山</span>区
-										<span class="street">雄楚大道666号(中南财经政法大学)</span></p>
-								</div>
-								<div class="new-addr-btn">
-									<a href="#"><i class="am-icon-edit"></i>编辑</a>
-									<span class="new-addr-bar">|</span>
-									<a href="javascript:void(0);" onClick="delClick(this);"><i class="am-icon-trash"></i>删除</a>
-								</div>
-							</li>
-							<li class="user-addresslist">
-								<span class="new-option-r"><i class="am-icon-check-circle"></i>设为默认</span>
-								<p class="new-tit new-p-re">
-									<span class="new-txt">小叮当</span>
-									<span class="new-txt-rd2">159****1622</span>
-								</p>
-								<div class="new-mu_l2a new-p-re">
-									<p class="new-mu_l2cw">
-										<span class="title">地址：</span>
-										<span class="province">湖北</span>省
-										<span class="city">武汉</span>市
-										<span class="dist">洪山</span>区
-										<span class="street">雄楚大道666号(中南财经政法大学)</span></p>
-								</div>
-								<div class="new-addr-btn">
-									<a href="#"><i class="am-icon-edit"></i>编辑</a>
-									<span class="new-addr-bar">|</span>
-									<a href="javascript:void(0);" onClick="delClick(this);"><i class="am-icon-trash"></i>删除</a>
-								</div>
-							</li>
+											$.post("{:url('ChangeAdd/moren')}",{mid:aid},function(data){
+												console.log(data);
+											});
+									});
+									$("#isdelome{$center.aid}").click(function(){
+										var aid = {$center.aid};
+											$.post("{:url('ChangeAdd/isReadyDel')}",{aid:aid},function(data){
+												if (data) {
+													location.reload();
+												} else {
+													alert('删除失败');
+												}
+											});
+									})
+								});
+							</script>
+							{/volist}
 						</ul>
-						<div class="clear"></div>
+						<div class="clear">
+							
+						</div>
 						<a class="new-abtn-type" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0}">添加新地址</a>
 						<!--例子-->
 						<div class="am-modal am-modal-no-btn" id="doc-modal-1">
@@ -170,7 +175,8 @@
 
 								<!--标题 -->
 								<div class="am-cf am-padding">
-									<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">新增地址</strong> / <small>Add&nbsp;address</small></div>
+									<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">新增地址</strong>  <small></small></div>
+									<div id="newcenter" style="color: red;"></div>
 								</div>
 								<hr/>
 
@@ -193,17 +199,14 @@
 										<div class="am-form-group">
 											<label for="user-address" class="am-form-label">所在地</label>
 											<div class="am-form-content address">
-												<select data-am-selected>
-													<option value="a">浙江省</option>
-													<option value="b" selected>湖北省</option>
+												<select id="province">
+													<option value="a">请选择省份</option>
 												</select>
-												<select data-am-selected>
-													<option value="a">温州市</option>
-													<option value="b" selected>武汉市</option>
+												<select id="city">
+													<option value="a">请选择城市</option>
 												</select>
-												<select data-am-selected>
-													<option value="a">瑞安区</option>
-													<option value="b" selected>洪山区</option>
+												<select id="country">
+													<option >县/区</option>
 												</select>
 											</div>
 										</div>
@@ -212,14 +215,13 @@
 											<label for="user-intro" class="am-form-label">详细地址</label>
 											<div class="am-form-content">
 												<textarea class="" rows="3" id="user-intro" placeholder="输入详细地址"></textarea>
-												<small>100字以内写出你的详细地址...</small>
+												<small>50字以内写出你的详细地址...</small>
 											</div>
 										</div>
 
 										<div class="am-form-group">
 											<div class="am-u-sm-9 am-u-sm-push-3">
-												<a class="am-btn am-btn-danger">保存</a>
-												<a href="javascript: void(0)" class="am-close am-btn am-btn-danger" data-am-modal-close>取消</a>
+												<a class="am-btn am-btn-danger" id="savethis">保存</a>
 											</div>
 										</div>
 									</form>
@@ -230,21 +232,6 @@
 						</div>
 
 					</div>
-
-					<script type="text/javascript">
-						$(document).ready(function() {							
-							$(".new-option-r").click(function() {
-								$(this).parent('.user-addresslist').addClass("defaultAddr").siblings().removeClass("defaultAddr");
-							});
-							
-							var $ww = $(window).width();
-							if($ww>640) {
-								$("#doc-modal-1").removeClass("am-modal am-modal-no-btn")
-							}
-							
-						})
-					</script>
-
 					<div class="clear"></div>
 
 				</div>
@@ -275,38 +262,38 @@
 
 			<aside class="menu">
 				<ul>
-					<li class="person">
-						<a href="个人中心.html">个人中心</a>
+					<li class="person active">
+						<a href="{:url('Center/center')}">个人中心</a>
 					</li>
 					<li class="person">
-						<a href="#">个人资料</a>
+						<a href="{:url('Center/center')}">个人资料</a>
 						<ul>
-							<li> <a href="information.html">个人信息</a></li>
-							<li> <a href="safety.html">安全设置</a></li>
-							<li class="active"> <a href="address.html">收货地址</a></li>
+							<li> <a href="{:url('Information/information')}">个人信息</a></li>
+							<li> <a href="{:url('Safe/safety')}">安全设置</a></li>
+							<li> <a href="{:url('Address/address')}">收货地址</a></li>
 						</ul>
 					</li>
 					<li class="person">
-						<a href="#">我的交易</a>
+						<a href="{:url('Order/order')}">我的交易</a>
 						<ul>
-							<li><a href="order.html">订单管理</a></li>
-							<li> <a href="change.html">退款售后</a></li>
+							<li><a href="{:url('Order/order')}">订单管理</a></li>
+							<li> <a href="">退款售后</a></li>
 						</ul>
 					</li>
 					<li class="person">
-						<a href="#">我的资产</a>
+						<a href="{:url('Coupon/coupon')}">我的资产</a>
 						<ul>
-							<li> <a href="coupon.html">优惠券 </a></li>
-							<li> <a href="bonus.html">红包</a></li>
-							<li> <a href="bill.html">账单明细</a></li>
+							<li> <a href="{:url('Coupon/coupon')}">优惠券 </a></li>
+							<li> <a href="">红包</a></li>
+							<li> <a href="{:url('Bill/bill')}">账单明细</a></li>
 						</ul>
 					</li>
 
 					<li class="person">
 						<a href="#">我的小窝</a>
 						<ul>
-							<li> <a href="collection.html">收藏</a></li>
-							<li> <a href="foot.html">足迹</a></li>
+							<li> <a href="{:url('Collect/index')}">收藏</a></li>
+							<li> <a href="{:url('Foot/index')}">足迹</a></li>
 							<li> <a href="comment.html">评价</a></li>
 							<li> <a href="news.html">消息</a></li>
 						</ul>
@@ -318,5 +305,29 @@
 		</div>
 
 	</body>
-
 </html>
+<script type="text/javascript">
+	$(document).ready(function() {							
+		$(".new-option-r").click(function() {
+			$(this).parent('.user-addresslist').addClass("defaultAddr").siblings().removeClass("defaultAddr");
+		});
+		
+		var $ww = $(window).width();
+		if($ww>640) {
+			$("#doc-modal-1").removeClass("am-modal am-modal-no-btn")
+		}
+	});
+	$('#savethis').click(function(){
+		var consignee = $("#user-name").val();
+
+		var phone = $('#user-phone').val();
+		var province = $('#province').val();
+		var city = $('#city').val();
+		var country = $('#country').val();
+		var address = $('#user-intro').val();
+		$.post("{:url('Address/addAddress')}",{consignee:consignee,phone:phone,province:province,city:city,country:country,address:address},function(data){
+			$('#newcenter').html('&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp * ' + ' &nbsp &nbsp'  + data);
+			location.reload();
+		})
+	})
+</script>

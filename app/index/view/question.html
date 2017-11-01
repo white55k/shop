@@ -7,14 +7,14 @@
 
 		<title>安全问题</title>
 
-		<link href="AmazeUI-2.4.2/assets/css/admin.css" rel="stylesheet" type="text/css">
-		<link href="AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/admin.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/amazeui.css" rel="stylesheet" type="text/css">
 
-		<link href="css/personal.css" rel="stylesheet" type="text/css">
-		<link href="css/stepstyle.css" rel="stylesheet" type="text/css">
+		<link href="__CSS__/personal.css" rel="stylesheet" type="text/css">
+		<link href="__CSS__/stepstyle.css" rel="stylesheet" type="text/css">
 
-		<script src="AmazeUI-2.4.2/assets/js/jquery.min.js" type="text/javascript"></script>
-		<script src="AmazeUI-2.4.2/assets/js/amazeui.js" type="text/javascript"></script>
+		<script src="__AMAZEUI_JS__/jquery.min.js" type="text/javascript"></script>
+		<script src="__AMAZEUI_JS__/amazeui.js" type="text/javascript"></script>
 
 	</head>
 
@@ -35,16 +35,34 @@
 						</ul>
 						<ul class="message-r">
 							<div class="topMessage home">
-								<div class="menu-hd"><a href="#" target="_top" class="h">商城首页</a></div>
+								<div class="menu-hd"><a href="{:url('Index/index')}" target="_top" class="h">商城首页</a></div>
 							</div>
 							<div class="topMessage my-shangcheng">
-								<div class="menu-hd MyShangcheng"><a href="#" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a></div>
+								<div class="menu-hd MyShangcheng">
+								{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+									<a href="" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a>
+								{else /}
+									<a href="{:url('Center/center')}" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a>
+								{/if}
+								</div>
 							</div>
 							<div class="topMessage mini-cart">
-								<div class="menu-hd"><a id="mc-menu-hd" href="#" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span><strong id="J_MiniCartNum" class="h">0</strong></a></div>
+								<div class="menu-hd">
+									{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+										<a id="mc-menu-hd" href="{:url('User/login')}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
+									{else /}
+										<a id="mc-menu-hd" href="{:url('ShowCar/index')}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
+									{/if}
+								</div>
 							</div>
 							<div class="topMessage favorite">
-								<div class="menu-hd"><a href="#" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a></div>
+								<div class="menu-hd">
+									{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+										<a href="{:url('User/login')}" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a>
+									{else /}
+										<a href="{:url('Collect/index')}" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a>
+									{/if}
+								</div>
 						</ul>
 						</div>
 
@@ -52,7 +70,7 @@
 
 						<div class="nav white">
 							<div class="logoBig">
-								<li><img src="images/logobig.png" /></li>
+								<li><img src="__IMAGES__/logobig.png" /></li>
 							</div>
 
 							<div class="search-bar pr">
@@ -115,12 +133,14 @@
 					</div>
 					<form class="am-form am-form-horizontal">
 						<div class="am-form-group select">
-							<label for="user-question1" class="am-form-label">问题一</label>
+							<label for="user-question1" class="am-form-label">问题</label>
 							<div class="am-form-content">
-								<select data-am-selected>
-									<option value="a" selected>请选择安全问题</option>
-									<option value="b">您最喜欢的颜色是什么？</option>
-									<option value="c">您的故乡在哪里？</option>
+								<select name="question">
+									<option >请选择安全问题</option>
+									<option >您最喜欢的动物是什么？</option>
+									<option >您的配偶是活的么？</option>
+									<option >您的初恋在哪里？</option>
+									<option >您的现任在哪里？</option>
 								</select>
 							</div>
 						</div>
@@ -130,26 +150,12 @@
 								<input type="text" id="user-answer1" placeholder="请输入安全问题答案">
 							</div>
 						</div>
-						<div class="am-form-group select">
-							<label for="user-question2" class="am-form-label">问题二</label>
-							<div class="am-form-content">
-								<select data-am-selected>
-									<option value="a" selected>请选择安全问题</option>
-									<option value="b">您最喜欢的颜色是什么？</option>
-									<option value="c">您的故乡在哪里？</option>
-								</select>
-							</div>
-						</div>
-						<div class="am-form-group">
-							<label for="user-answer2" class="am-form-label">答案</label>
-							<div class="am-form-content">
-								<input type="text" id="user-answer2" placeholder="请输入安全问题答案">
-							</div>
-						</div>
 						<div class="info-btn">
-							<div class="am-btn am-btn-danger">保存修改</div>
+							<div class="am-btn am-btn-danger" id="savethis">保存修改</div>
 						</div>
-
+						<div>
+							<p id="zhanshi" style="text-align: center;margin-top: 20px;color: red"></p>
+						</div>
 					</form>
 
 				</div>
@@ -225,3 +231,13 @@
 	</body>
 
 </html>
+<script type="text/javascript">
+	$('#savethis').click(function(){
+		var question = $('select[name=question]').val();
+		var answer = $('#user-answer1').val();
+		$.post("{:url('Question/addQuestion')}",{question:question,answer:answer},function(data){
+			$('#zhanshi').html(data);
+			$('input[id=user-answer1]').val('');
+		})
+	})
+</script>

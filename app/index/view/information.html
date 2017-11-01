@@ -7,13 +7,15 @@
 
 		<title>个人资料</title>
 
-		<link href="AmazeUI-2.4.2/assets/css/admin.css" rel="stylesheet" type="text/css">
-		<link href="AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/admin.css" rel="stylesheet" type="text/css">
+		<link href="__AMAZEUI_CSS__/amazeui.css" rel="stylesheet" type="text/css">
 
-		<link href="css/personal.css" rel="stylesheet" type="text/css">
-		<link href="css/infstyle.css" rel="stylesheet" type="text/css">
-		<script src="AmazeUI-2.4.2/assets/js/jquery.min.js" type="text/javascript"></script>
-		<script src="AmazeUI-2.4.2/assets/js/amazeui.js" type="text/javascript"></script>
+		<link href="__CSS__/personal.css" rel="stylesheet" type="text/css">
+		<link href="__CSS__/infstyle.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" type="text/css" href="__CSS__/public.css">
+		<script src="__AMAZEUI_JS__/jquery.min.js" type="text/javascript"></script>
+		<script src="__AMAZEUI_JS__/amazeui.js" type="text/javascript"></script>
+		<script type="text/javascript" src="__JS__/YMDClass.js"></script>
 			
 	</head>
 
@@ -34,16 +36,34 @@
 						</ul>
 						<ul class="message-r">
 							<div class="topMessage home">
-								<div class="menu-hd"><a href="#" target="_top" class="h">商城首页</a></div>
+								<div class="menu-hd"><a href="{:url('Index/index')}" target="_top" class="h">商城首页</a></div>
 							</div>
 							<div class="topMessage my-shangcheng">
-								<div class="menu-hd MyShangcheng"><a href="#" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a></div>
+								<div class="menu-hd MyShangcheng">
+								{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+									<a href="" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a>
+								{else /}
+									<a href="{:url('Center/center')}" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a>
+								{/if}
+								</div>
 							</div>
 							<div class="topMessage mini-cart">
-								<div class="menu-hd"><a id="mc-menu-hd" href="#" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span><strong id="J_MiniCartNum" class="h">0</strong></a></div>
+								<div class="menu-hd">
+									{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+										<a id="mc-menu-hd" href="{:url('User/login')}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
+									{else /}
+										<a id="mc-menu-hd" href="{:url('ShowCar/index')}" target="_top"><i class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
+									{/if}
+								</div>
 							</div>
 							<div class="topMessage favorite">
-								<div class="menu-hd"><a href="#" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a></div>
+								<div class="menu-hd">
+									{if condition="empty($Think.session.username) AND empty($Think.cookie.username)"}
+										<a href="{:url('User/login')}" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a>
+									{else /}
+										<a href="{:url('Collect/index')}" target="_top"><i class="am-icon-heart am-icon-fw"></i><span>收藏夹</span></a>
+									{/if}
+								</div>
 						</ul>
 						</div>
 
@@ -51,7 +71,7 @@
 
 						<div class="nav white">
 							<div class="logoBig">
-								<li><img src="images/logobig.png" /></li>
+								<li><img src="__IMAGES__/logobig.png" /></li>
 							</div>
 
 							<div class="search-bar pr">
@@ -97,47 +117,45 @@
 						<hr/>
 
 						<!--头像 -->
-						<div class="user-infoPic">
-
-							<div class="filePic">
-								<input type="file" class="inputPic" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*">
-								<img class="am-circle am-img-thumbnail" src="images/getAvatar.do.jpg" alt="" />
-							</div>
-
-							<p class="am-form-help">头像</p>
-
-							<div class="info-m">
-								<div><b>用户名：<i>小叮当</i></b></div>
-								<div class="u-level">
-									<span class="rank r2">
-							             <s class="vip1"></s><a class="classes" href="#">铜牌会员</a>
-						            </span>
+						<form class="form" action="{:url('Information/changePic')}" enctype="multipart/form-data" method="post"> 
+							<div class="user-infoPic">
+								<div class="filePic">
+									<input type="file" name="file" class="inputPic" allowexts="gif,jpeg,jpg,png,bmp" accept="image/*">
+									<img class="am-circle am-img-thumbnail" src="{$pic}" alt="点击更改" />
 								</div>
-								<div class="u-safety">
-									<a href="safety.html">
-									 账户安全
-									<span class="u-profile"><i class="bc_ee0000" style="width: 60px;" width="0">60分</i></span>
-									</a>
+								<div class="showTj" style="display: none;"><input type="submit"></div>
+								<div class="info-m">
+									<div><b>用户名：<i>{$username}</i></b></div>
+									<div class="u-level">
+										<span class="rank r2">
+								             <s class="vip1"></s><a class="classes" href="#">{$gold}</a>
+							            </span>
+									</div>
+									<div class="u-safety">
+										<a href="safety.html">
+										 账户安全
+										<span class="u-profile"><i class="bc_ee0000" style="width: 60px;" width="0">{$safe_score}</i></span>
+										</a>
+									</div>
 								</div>
 							</div>
-						</div>
-
+						</form>
 						<!--个人信息 -->
 						<div class="info-main">
 							<form class="am-form am-form-horizontal">
-
 								<div class="am-form-group">
-									<label for="user-name2" class="am-form-label">昵称</label>
+									<label for="user-name2" class="am-form-label">用户名</label>
 									<div class="am-form-content">
-										<input type="text" id="user-name2" placeholder="nickname">
+										<input type="text" name = "user-name2" id="user-name2" placeholder="{$username}">
 
 									</div>
+									<p style="margin-left: 85px;color: red">* ps:修改用户名不影响您使用邮箱或者手机登录，默认状态下用户名为注册时填写的用户名</p>
 								</div>
 
 								<div class="am-form-group">
 									<label for="user-name" class="am-form-label">姓名</label>
 									<div class="am-form-content">
-										<input type="text" id="user-name2" placeholder="name">
+										<input type="text" id="user-name2" name="truename"placeholder="name">
 
 									</div>
 								</div>
@@ -161,39 +179,22 @@
 									<label for="user-birth" class="am-form-label">生日</label>
 									<div class="am-form-content birth">
 										<div class="birth-select">
-											<select data-am-selected>
-												<option value="a">2015</option>
-												<option value="b">1987</option>
-											</select>
-											<em>年</em>
+											<select name="year1" id="year"></select>
+											<select name="month1" id="month"></select>
+											<select name="day1" id="day"></select>
 										</div>
-										<div class="birth-select2">
-											<select data-am-selected>
-												<option value="a">12</option>
-												<option value="b">8</option>
-											</select>
-											<em>月</em></div>
-										<div class="birth-select2">
-											<select data-am-selected>
-												<option value="a">21</option>
-												<option value="b">23</option>
-											</select>
-											<em>日</em></div>
 									</div>
-							
 								</div>
 								<div class="am-form-group">
 									<label for="user-phone" class="am-form-label">电话</label>
-									<div class="am-form-content">
-										<input id="user-phone" placeholder="telephonenumber" type="tel">
-
+									<div class="am-form-content" style="color: pink">
+										<label for="user-phone" class="am-form-label">{$phone}</label>
 									</div>
 								</div>
 								<div class="am-form-group">
 									<label for="user-email" class="am-form-label">电子邮件</label>
-									<div class="am-form-content">
-										<input id="user-email" placeholder="Email" type="email">
-
+									<div class="am-form-content" style="color: pink">
+										<label for="user-email" class="am-form-label">{$email}</label>
 									</div>
 								</div>
 								<div class="am-form-group address">
@@ -223,10 +224,10 @@
 									</div>
 								</div>
 								<div class="info-btn">
-									<div class="am-btn am-btn-danger">保存修改</div>
+									<div class="am-btn am-btn-danger" id="save">保存修改</div>
 								</div>
 
-							</form>
+							
 						</div>
 
 					</div>
@@ -259,38 +260,38 @@
 
 			<aside class="menu">
 				<ul>
-					<li class="person">
-						<a href="index.html">个人中心</a>
+					<li class="person active">
+						<a href="{:url('Center/center')}">个人中心</a>
 					</li>
 					<li class="person">
-						<a href="#">个人资料</a>
+						<a href="{:url('Center/center')}">个人资料</a>
 						<ul>
-							<li class="active"> <a href="information.html">个人信息</a></li>
-							<li> <a href="safety.html">安全设置</a></li>
-							<li> <a href="address.html">收货地址</a></li>
+							<li> <a href="{:url('Information/information')}">个人信息</a></li>
+							<li> <a href="{:url('Safe/safety')}">安全设置</a></li>
+							<li> <a href="{:url('Address/address')}">收货地址</a></li>
 						</ul>
 					</li>
 					<li class="person">
-						<a href="#">我的交易</a>
+						<a href="{:url('Order/order')}">我的交易</a>
 						<ul>
-							<li><a href="order.html">订单管理</a></li>
-							<li> <a href="change.html">退款售后</a></li>
+							<li><a href="{:url('Order/order')}">订单管理</a></li>
+							<li> <a href="">退款售后</a></li>
 						</ul>
 					</li>
 					<li class="person">
-						<a href="#">我的资产</a>
+						<a href="{:url('Coupon/coupon')}">我的资产</a>
 						<ul>
-							<li> <a href="coupon.html">优惠券 </a></li>
-							<li> <a href="bonus.html">红包</a></li>
-							<li> <a href="bill.html">账单明细</a></li>
+							<li> <a href="{:url('Coupon/coupon')}">优惠券 </a></li>
+							<li> <a href="">红包</a></li>
+							<li> <a href="{:url('Bill/bill')}">账单明细</a></li>
 						</ul>
 					</li>
 
 					<li class="person">
 						<a href="#">我的小窝</a>
 						<ul>
-							<li> <a href="collection.html">收藏</a></li>
-							<li> <a href="foot.html">足迹</a></li>
+							<li> <a href="{:url('Collect/index')}">收藏</a></li>
+							<li> <a href="{:url('Foot/index')}">足迹</a></li>
 							<li> <a href="comment.html">评价</a></li>
 							<li> <a href="news.html">消息</a></li>
 						</ul>
@@ -304,3 +305,51 @@
 	</body>
 
 </html>
+<script type="text/javascript">
+	new YMDselect('year1','month1','day1');
+	$('#save').click(function(){
+		var username = $('input[name=user-name2]').val();
+		var realname = $('input[name=truename]').val();
+		var sex = $('input:radio[name=radio10]:checked').val();
+		if (sex == 'male') {
+			var sex = 1
+		} else if(sex == 'female') {
+			var sex = 2;
+		} else {
+			var sex = 0;
+		}
+		var year = $('#year').val();
+
+		var month = $('#month').val();
+		var day = $('#day').val();
+		var stringtime = year +'-'+ month + '-'+ day;
+		var birthday = (Date.parse(new Date(stringtime)))/1000;
+		if (year == 0 || month == 0 || day == 0) {
+			var birthday = 0;
+		}
+
+		var phone = $('input[name=phone]').val();
+		var email = $('input[name=email]').val();
+		var data = new FormData;
+		$.post("{:url('Information/dochange')}",{
+			'username':username,
+			'realname':realname,
+			'sex':sex,
+			'birthday':birthday, 
+			'phone':phone,
+			'email':email,
+		},function(data){
+			if (data == 1) {
+				alert('资料修改成功')
+			} else if(data == 2){
+				confirm('您未修改任何资料是否确认提交?')
+			} else {
+				alert('提交失败请确认后重新提交');
+			};
+		})
+	});
+	/*上传头像*/
+	$('.filePic').click(function(){
+		$('.showTj').show();
+	})
+</script>
