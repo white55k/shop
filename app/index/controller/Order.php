@@ -70,11 +70,26 @@ class Order extends Controller
 		$close = $this->order->closeAll();
 		$ready = $this->order->readyAll();
 		$readySend = $this->order->readySend();
+		$readyCatch = $this->order->readyCatch();
+		$readyComment = $this->order->readyComment();
 		return $this->fetch('/order',[
 			'order' => $res,
 			'close' => $close,
 			'ready' => $ready,
 			'readySend' => $readySend,
+			'readyCatch' => $readyCatch,
+			'readyComment' => $readyComment,
 		]);
+	}
+
+	# 删除已完成订单
+	public function delOk()
+	{
+		$res = $this->order->delOk();
+		if ($res) {
+			return $this->success('删除成功');
+		} else {
+			return $this->error('删除失败');
+		}
 	}
 }

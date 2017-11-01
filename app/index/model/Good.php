@@ -110,6 +110,22 @@ class Good extends Model
 		
 	}
 
+	# 评价商品
+	public function commentNew()
+	{
+		$gid = input('param.gid');
+		# 查询商品详情
+		$res = $this->where('gid','eq',$gid)->find();
+		return $res;
+	}
+
+	# 今日新品推荐
+	public function newtoday()
+	{
+		$res = $this->order('create_time desc')->find();
+		return $res;
+	}
+
 	public function car()
 	{
 		return $this->hasOne('Car', 'good_id');

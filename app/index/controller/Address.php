@@ -54,7 +54,6 @@ class Address extends Controller
     	if (is_string($res_address)) {
     		return false;
     	}
-
     	$this->assign('res_address', $res_address);
 
     	return $this->fetch('/new_address');

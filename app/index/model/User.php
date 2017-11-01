@@ -134,7 +134,17 @@ class User extends Model
 			return 2;
 		}
 
-		$res = $this->where('username','eq',$name)->update($data);
+		$res = $this->where('username','eq',$name)->find();
+		$res = $res->date($data)->save();
+		if ($res) {
+			if (session('username')) {
+				session('username',$username);
+			}else {
+				cookie('username',$username);
+			}
+			
+			
+		}
 		return $res;
 	} 
 	# 更改头像
@@ -152,7 +162,8 @@ class User extends Model
     	}
     	# 保存头像
     	$username = session('username') ? session('username') : cookie('username');
-    	$res = $this->where('username','eq',$username)->update(['picture' => $picture]);
+    	$res = $this->where('username','eq',$username)->find();
+    	$res = $res->date(['picture' => $picture])->save();
     	return $res;
 	}
 	# 更改密码
@@ -167,7 +178,8 @@ class User extends Model
 		} else if($oldpwd == $newpwd) {
 			return 1;
 		} else{
-			$res = $this->where('username','eq',$username)->update(['password' => $newpwd]);
+			$res = $this->where('username','eq',$username)->find();
+			$res = $res->date(['password' => $newpwd])->save();
 			if ($res) {
 				return 1;
 			} else {
@@ -187,13 +199,15 @@ class User extends Model
 			}
 			return "该手机号码已绑定其他用户";
 		}
-		$res = $this->where('username','eq',$username)->update(['phone' => $phone]);
+		$res = $this->where('username','eq',$username)->find();
+		$res = $res->date(['phone' => $phone])->save();
 		if ($res) {
 			# 查看原始手机号是否为空
 			$oldPhone = $this->where('username','eq',$username)->find();
 			if (!$oldPhone['Phone']) {
 				$old_score =$oldPhone['safe_score'] + 20;
-				$end = $this->where('username','eq',$username)->update(['safe_score' => $old_score]);
+				$end = $this->where('username','eq',$username)->find();
+				$end = $end->date(['safe_score' => $old_score])->save;
 			}
 			return "修改成功";
 		}else{
@@ -219,7 +233,8 @@ class User extends Model
 			$oldEmail = $this->where('username','eq',$username)->find();
 			if (!$oldEmail['email']) {
 				$oldEmail['safe_score'] +=20;
-				$end = $this->where('username','eq',$username)->update(['safe_score' => $oldEmail['safe_score']]);
+				$end = $this->where('username','eq',$username)->find();
+				$end = $end->date(['safe_score' => $oldEmail['safe_score']])->save();
 			}
 			return "修改成功";
 		}else{
@@ -231,10 +246,10 @@ class User extends Model
 		$username = session('username') ? session('username') : cookie('username');
 		$question = input('post.question');
 		$answer = input('post.answer');
-		$res = $this->where('username','eq',$username)->update([
+		$res = $this->where('username','eq',$username)->date([
 			'answer' => $answer,
 			'question' => $question,
-		]);
+		])->save();
 		if ($res) {
 			return "保存成功";
 		} else {
@@ -255,6 +270,17 @@ class User extends Model
 		$username = session('username') ? session('username') : cookie('useranme');
 		$res = $this->where('username', 'eq', $username)->find();
 		return $res;
+	}
+
+	# qq登录
+	public function addUs($data)
+	{
+		$res = $this->where('username','eq',$data)->select();
+		if ($res) {
+			return false;
+		}
+		# 插入用户名密码
+		$res = $this->data(['username'=>$data])->save();
 	}
 
 	public function level()

@@ -125,7 +125,7 @@
 								<li><a href="#tab4">待收货</a></li>
 								<li><a href="#tab5">待评价</a></li>
 							</ul>
-
+<!-- 已完成 -->
 							<div class="am-tabs-bd">
 								<div class="am-tab-panel am-fade am-in am-active" id="tab1">
 									<div class="order-top">
@@ -151,7 +151,6 @@
 											<td class="td-inner">交易操作</td>
 										</div>
 									</div>
-								<!-- 已完成 -->
 									<div class="order-main">
 										<div class="order-list">
 											<!--交易成功-->
@@ -160,7 +159,6 @@
 												<div class="order-title">
 													<div class="dd-num">订单编号：<a href="javascript:;">{$v['order_data']['order_number']}</a></div>
 													<span>成交时间：{$v['order_data']['create_time']}</span>
-													<!--    <em>店铺：小桔灯</em>-->
 												</div>
 												<div class="order-content">
 													<div class="order-left">
@@ -172,7 +170,7 @@
 
 																	<a href="#" class="J_MakePoint">
 
-																		<img src="__IMAGES__/{$val->picture->small_picture}" class="itempic J_ItemImg">
+																		<img src="{$val->picture->path_url}" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -206,7 +204,7 @@
 													<div class="order-right">
 														<li class="td td-amount">
 															<div class="item-amount">
-																合计：676.00
+																合计：{$v['order_data']['payable']}
 																<p>含运费：<span>10.00</span></p>
 															</div>
 														</li>
@@ -219,146 +217,8 @@
 																</div>
 															</li>
 															<li class="td td-change">
-																<div class="am-btn am-btn-danger anniu">
-																	删除订单</div>
-															</li>
-														</div>
-													</div>
-												</div>
-											</div>
-											{/volist}
-
-											<!--交易失败-->
-											{volist name="close" id="m"}
-											<div class="order-status0">
-												<div class="order-title">
-													<div class="dd-num">订单编号：<a href="javascript:;">{$m['order_data']['order_number']}</a></div>
-													<span>成交时间：{$m['order_data']['create_time']}</span>
-													<!--    <em>店铺：小桔灯</em>-->
-												</div>
-												<div class="order-content">
-													<div class="order-left">
-														{foreach $m['good_data'] as $val}
-														<ul class="item-list">
-															<li class="td td-item">
-																<div class="item-pic">
-																	<a href="#" class="J_MakePoint">
-																		<img src="__IMAGES__/{$val->good->small_picture}" class="itempic J_ItemImg">
-																	</a>
-																</div>
-																<div class="item-info">
-																	<div class="item-basic-info">
-																		<a href="#">
-																			<p>${$val['name']}</p>
-																			<p class="info-little">颜色：12#川南玛瑙
-																				<br/>包装：裸装 </p>
-																		</a>
-																	</div>
-																</div>
-															</li>
-															<li class="td td-price">
-																<div class="item-price">
-																	{$val['money']}
-																</div>
-															</li>
-															<li class="td td-number">
-																<div class="item-number">
-																	<span>×</span>2
-																</div>
-															</li>
-															<li class="td td-operation">
-																<div class="item-operation">
-																	
-																</div>
-															</li>
-														</ul>
-														{/foreach}
-													</div>
-													<div class="order-right">
-														<li class="td td-amount">
-															<div class="item-amount">
-																合计：676.00
-																<p>含运费：<span>10.00</span></p>
-															</div>
-														</li>
-														<div class="move-right">
-															<li class="td td-status">
-																<div class="item-status">
-																	<p class="Mystatus">交易关闭</p>
-																</div>
-															</li>
-															<li class="td td-change">
-																<div class="am-btn am-btn-danger anniu">
-																	删除订单</div>
-															</li>
-														</div>
-													</div>
-												</div>
-											</div>
-											{/volist}
-											<!--待发货-->
-											{volist name="ready" id="r"}
-											<div class="order-status2">
-												<div class="order-title">
-													<div class="dd-num">订单编号：<a href="javascript:;">{$r['order_data']['order_number']}</a></div>
-													<span>成交时间：{$r['order_data']['create_time']}</span>
-													<!--    <em>店铺：小桔灯</em>-->
-												</div>
-												<div class="order-content">
-													<div class="order-left">
-														{foreach $r['good_data'] as $val}
-														<ul class="item-list">
-															<li class="td td-item">
-																<div class="item-pic">
-																	<a href="#" class="J_MakePoint">
-																		<img src="__IMAGES__/{$val->picture->small_picture}" class="itempic J_ItemImg">
-																	</a>
-																</div>
-																<div class="item-info">
-																	<div class="item-basic-info">
-																		<a href="#">
-																			<p>{$val['name']}</p>
-																			<p class="info-little">颜色：12#川南玛瑙
-																				<br/>包装：裸装 </p>
-																		</a>
-																	</div>
-																</div>
-															</li>
-															<li class="td td-price">
-																<div class="item-price">
-																	{$val['money']}
-																</div>
-															</li>
-															<li class="td td-number">
-																<div class="item-number">
-																	<span>×</span>2
-																</div>
-															</li>
-															<li class="td td-operation">
-																<div class="item-operation">
-																	<a href="refund.html">退款</a>
-																</div>
-															</li>
-														</ul>
-														{/foreach}
-													</div>
-													<div class="order-right">
-														<li class="td td-amount">
-															<div class="item-amount">
-																合计：676.00
-																<p>含运费：<span>10.00</span></p>
-															</div>
-														</li>
-														<div class="move-right">
-															<li class="td td-status">
-																<div class="item-status">
-																	<p class="Mystatus">买家已付款</p>
-																	<p class="order-info"><a href="orderinfo.html">订单详情</a></p>
-																</div>
-															</li>
-															<li class="td td-change">
-																<div class="am-btn am-btn-danger anniu">
-																	提醒发货</div>
+																<a href="{:url('Order/delOk',['oid'=>$v['order_data']['oid']])}"><div class="am-btn am-btn-danger anniu">
+																	删除订单</div></a>
 															</li>
 														</div>
 													</div>
@@ -410,7 +270,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="__IMAGES__/{$val->picture->small_picture}" class="itempic J_ItemImg">
+																		<img src="{$val->picture->path_url}" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -511,7 +371,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="__IMAGES__/{$val->picture->small_picture}" class="itempic J_ItemImg">
+																		<img src="{$val->picture->path_url}" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -568,7 +428,7 @@
 									</div>
 									{/volist}
 								</div>
-<!-- 待收货 -->								
+	<!-- 待收货 -->								
 								<div class="am-tab-panel am-fade" id="tab4">
 									<div class="order-top">
 										<div class="th th-item">
@@ -593,7 +453,7 @@
 											<td class="td-inner">交易操作</td>
 										</div>
 									</div>
-									{volist name="order" id="catch"}
+									{volist name="readyCatch" id="catch"}
 									<div class="order-main">
 										<div class="order-list">
 											<div class="order-status3">
@@ -609,7 +469,7 @@
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="__IMAGES__/{$val->picture->small_picture}" class="itempic J_ItemImg">
+																		<img src="{$val->picture->path_url}" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
@@ -668,7 +528,7 @@
 									</div>
 									{/volist}
 								</div>
-
+	<!--待评论 -->							
 								<div class="am-tab-panel am-fade" id="tab5">
 									<div class="order-top">
 										<div class="th th-item">
@@ -693,99 +553,29 @@
 											<td class="td-inner">交易操作</td>
 										</div>
 									</div>
-
 									<div class="order-main">
+										{volist name="readyComment" id="reaC" empty="空的"}
 										<div class="order-list">
-											<!--不同状态的订单	-->
-										<div class="order-status4">
+											<div class="order-status1">
 												<div class="order-title">
-													<div class="dd-num">订单编号：<a href="javascript:;">1601430</a></div>
-													<span>成交时间：2015-12-20</span>
-
-												</div>
-												<div class="order-content">
-													<div class="order-left">
-														<ul class="item-list">
-															<li class="td td-item">
-																<div class="item-pic">
-																	<a href="#" class="J_MakePoint">
-																		<img src="__IMAGES__/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
-																	</a>
-																</div>
-																<div class="item-info">
-																	<div class="item-basic-info">
-																		<a href="#">
-																			<p>美康粉黛醉美唇膏 持久保湿滋润防水不掉色</p>
-																			<p class="info-little">颜色：12#川南玛瑙
-																				<br/>包装：裸装 </p>
-																		</a>
-																	</div>
-																</div>
-															</li>
-															<li class="td td-price">
-																<div class="item-price">
-																	333.00
-																</div>
-															</li>
-															<li class="td td-number">
-																<div class="item-number">
-																	<span>×</span>2
-																</div>
-															</li>
-															<li class="td td-operation">
-																<div class="item-operation">
-																	<a href="refund.html">退款/退货</a>
-																</div>
-															</li>
-														</ul>
-
-													</div>
-													<div class="order-right">
-														<li class="td td-amount">
-															<div class="item-amount">
-																合计：676.00
-																<p>含运费：<span>10.00</span></p>
-															</div>
-														</li>
-														<div class="move-right">
-															<li class="td td-status">
-																<div class="item-status">
-																	<p class="Mystatus">交易成功</p>
-																	<p class="order-info"><a href="orderinfo.html">订单详情</a></p>
-																	<p class="order-info"><a href="logistics.html">查看物流</a></p>
-																</div>
-															</li>
-															<li class="td td-change">
-																<a href="commentlist.html">
-																	<div class="am-btn am-btn-danger anniu">
-																		评价商品</div>
-																</a>
-															</li>
-														</div>
-													</div>
-												</div>
-											</div>
-											
-											
-											<div class="order-status4">
-												<div class="order-title">
-													<div class="dd-num">订单编号：<a href="javascript:;">1601430</a></div>
-													<span>成交时间：2015-12-20</span>
+													<div class="dd-num">订单编号：<a href="javascript:;">{$reaC['order_data']['order_number']}</a></div>
+													<span>成交时间：{$reaC['order_data']['create_time']}</span>
 													<!--    <em>店铺：小桔灯</em>-->
 												</div>
+											{foreach $reaC['good_data'] as $val}
 												<div class="order-content">
 													<div class="order-left">
 														<ul class="item-list">
 															<li class="td td-item">
 																<div class="item-pic">
 																	<a href="#" class="J_MakePoint">
-																		<img src="__IMAGES__/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
+																		<img src="{$val->picture->path_url}" class="itempic J_ItemImg">
 																	</a>
 																</div>
 																<div class="item-info">
 																	<div class="item-basic-info">
 																		<a href="#">
-																			<p>美康粉黛醉美唇膏 持久保湿滋润防水不掉色</p>
+																			<p>{$val['name']}</p>
 																			<p class="info-little">颜色：12#川南玛瑙
 																				<br/>包装：裸装 </p>
 																		</a>
@@ -794,7 +584,7 @@
 															</li>
 															<li class="td td-price">
 																<div class="item-price">
-																	333.00
+																	{$val['money']}
 																</div>
 															</li>
 															<li class="td td-number">
@@ -804,85 +594,15 @@
 															</li>
 															<li class="td td-operation">
 																<div class="item-operation">
-																	<a href="refund.html">退款/退货</a>
-																</div>
-															</li>
-														</ul>
 
-														<ul class="item-list">
-															<li class="td td-item">
-																<div class="item-pic">
-																	<a href="#" class="J_MakePoint">
-																		<img src="__IMAGES__/62988.jpg_80x80.jpg" class="itempic J_ItemImg">
-																	</a>
-																</div>
-																<div class="item-info">
-																	<div class="item-basic-info">
-																		<a href="#">
-																			<p>礼盒袜子女秋冬 纯棉袜加厚 韩国可爱 </p>
-																			<p class="info-little">颜色分类：李清照
-																				<br/>尺码：均码</p>
-																		</a>
-																	</div>
 																</div>
 															</li>
-															<li class="td td-price">
-																<div class="item-price">
-																	333.00
-																</div>
-															</li>
-															<li class="td td-number">
-																<div class="item-number">
-																	<span>×</span>2
-																</div>
-															</li>
-															<li class="td td-operation">
-																<div class="item-operation">
-																	<a href="refund.html">退款/退货</a>
-																</div>
-															</li>
-														</ul>
-														
-														<ul class="item-list">
-															<li class="td td-item">
-																<div class="item-pic">
-																	<a href="#" class="J_MakePoint">
-																		<img src="__IMAGES__/kouhong.jpg_80x80.jpg" class="itempic J_ItemImg">
-																	</a>
-																</div>
-																<div class="item-info">
-																	<div class="item-basic-info">
-																		<a href="#">
-																			<p>美康粉黛醉美唇膏 持久保湿滋润防水不掉色</p>
-																			<p class="info-little">颜色：12#川南玛瑙
-																				<br/>包装：裸装 </p>
-																		</a>
-																	</div>
-																</div>
-															</li>
-															<li class="td td-price">
-																<div class="item-price">
-																	333.00
-																</div>
-															</li>
-															<li class="td td-number">
-																<div class="item-number">
-																	<span>×</span>2
-																</div>
-															</li>
-															<li class="td td-operation">
-																<div class="item-operation">
-																	<a href="refund.html">退款/退货</a>
-																</div>
-															</li>
-														</ul>
-														
-
+														</ul>											
 													</div>
 													<div class="order-right">
 														<li class="td td-amount">
 															<div class="item-amount">
-																合计：676.00
+																合计：{$reaC['order_data']['payable']}
 																<p>含运费：<span>10.00</span></p>
 															</div>
 														</li>
@@ -890,26 +610,24 @@
 															<li class="td td-status">
 																<div class="item-status">
 																	<p class="Mystatus">交易成功</p>
-																	<p class="order-info"><a href="orderinfo.html">订单详情</a></p>
-																	<p class="order-info"><a href="logistics.html">查看物流</a></p>
+																	</p>
+
 																</div>
 															</li>
 															<li class="td td-change">
-																<a href="commentlist.html">
-																	<div class="am-btn am-btn-danger anniu">
-																		评价商品</div>
-																</a>
+																<a href="{:url('Comment/comment',['gid' => $val['gid'],'order_number' => $reaC['order_data']['order_number']])}">
+																<div class="am-btn am-btn-danger anniu">
+																	前去评价</div></a>
 															</li>
 														</div>
 													</div>
+
 												</div>
+											{/foreach}
 											</div>
-
-
 										</div>
-
+										{/volist}
 									</div>
-
 								</div>
 							</div>
 

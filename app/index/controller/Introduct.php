@@ -4,6 +4,7 @@ namespace app\index\controller;
 
 use app\index\model\Consume;
 use app\index\model\Figure;
+use app\index\model\Foot;
 use app\index\model\Good;
 use app\index\model\Menu;
 use app\index\model\Seckill;
@@ -17,6 +18,7 @@ class Introduct extends Controller
 {
 	protected $consume;
 	protected $figure;
+    protected $foot;
 	protected $good;
 	protected $menu;
 	protected $seckill;
@@ -29,6 +31,7 @@ class Introduct extends Controller
 		parent::_initialize();
 		$this->consume = new Consume;
 		$this->figure = new Figure;
+        $this->foot = new Foot;
 		$this->good = new Good;
 		$this->menu = new Menu;
 		$this->seckill = new Seckill;
@@ -58,6 +61,8 @@ class Introduct extends Controller
         # 获取商品详细介绍
         $res_details = $res_good->picture->details_picture;
         $res_details = explode(';', $res_details);
+        # 添加一个足迹
+        $this->foot->addFoot();
 
         $this->assign('res_all_similar', $res_all_similar);
     	$this->assign('res_comment_count', count($res_good->comment));

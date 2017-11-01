@@ -179,7 +179,7 @@
 									<li><a href="{:url('Order/order')}"><i><img src="__IMAGES__/pay.png"/></i><span>待付款<em class="m-num">{$order}</em></span></a></li>
 									<li><a href="{:url('Order/order')}"><i><img src="__IMAGES__/send.png"/></i><span>待发货<em class="m-num">{$express}</em></span></a></li>
 									<li><a href="{:url('Order/order')}"><i><img src="__IMAGES__/receive.png"/></i><span>待收货<em class="m-num">{$delivery}</em></span></a></li>
-									<li><a href="{:url('Order/order')}"><i><img src="__IMAGES__/comment.png"/></i><span>待评价<em class="m-num">3</em></span></a></li>
+									<li><a href="{:url('Order/comment')}"><i><img src="__IMAGES__/comment.png"/></i><span>待评价<em class="m-num">找找找</em></span></a></li>
 									<li><a href="{:url('Order/order')}"><i><img src="__IMAGES__/refund.png"/></i><span>退换货</span></a></li>
 								</ul>
 							</div>
@@ -345,12 +345,12 @@
 								<a class="i-load-more-item-shadow">15款新品</a>
 							</div>
 							<div class="new-goods-info">
-								<a class="shop-info" href="#" target="_blank">
+								<a class="shop-info" href="{:url('Introduct/good',['gid'=>$newtoday['gid']])}" target="_blank">
 									<div class="face-img-panel">
-										<img src="__IMAGES__/imgsearch1.jpg" alt="">
+										<img src="{$newtoday->picture->path_url}" alt="">
 									</div>
 									<span class="new-goods-num ">4</span>
-									<span class="shop-title">剥壳松子</span>
+									<span class="shop-title">{$newtoday['name']}</span>
 								</a>
 								<a class="follow " target="_blank">关注</a>
 							</div>
@@ -362,11 +362,11 @@
 								<i class="s-icon"></i>热卖推荐
 							</div>
 							<div class="new-goods-info">
-								<a class="shop-info" href="#" target="_blank">
+								<a class="shop-info" href="{:url('Introduct/good',['gid'=>$hotshop['gid']])}" target="_blank">
 									<div >
-										<img src="__IMAGES__/imgsearch1.jpg" alt="">
+										<img src="{$hotshop->picture->path_url}" title="{$hotshop['name']}">
 									</div>
-                                    <span class="one-hot-goods">￥9.20</span>
+                                    <span class="one-hot-goods">￥{$hotshop['money']}</span>
 								</a>
 							</div>
 						</div>

@@ -1,11 +1,16 @@
 <?php 
+
 namespace app\index\controller;
 
-
+use app\index\model\Figure;
+use app\index\model\Good;
+use app\index\model\Menu;
 use app\index\model\Site;
 use app\index\model\User as UserModel;
 
+use qqconnect\QC;
 use think\Controller;
+use think\Db;
 use think\Validate;
 
 class User extends Controller
@@ -22,6 +27,7 @@ class User extends Controller
 		$res_site = $this->site->selectAll();
         $this->assign('res_site', $res_site);
 	}
+
 	# 记住密码
 	public function remember()
 	{
@@ -30,6 +36,7 @@ class User extends Controller
 		cookie('username',$name,86400*7);
 		cookie('password',$password,86400*7);
 	}
+
 	# 取消记住密码
 	public function unremember()
 	{
@@ -53,6 +60,7 @@ class User extends Controller
 	{
 		return $this->fetch('/register');
 	}
+
 	# 发送邮箱验证码
 	public function send()
 	{
@@ -163,6 +171,7 @@ class User extends Controller
 			return "0";
 		}
 	}
+
 	# 再次获取验证码
 	//获取手机验证码
 	public function rphonemes()
@@ -189,6 +198,7 @@ class User extends Controller
 			return "短信发送失败,请认真核对您的手机号码";
 		}
 	}
+
 	# 手机验证注册
 	public function doregister_2()
 	{
@@ -235,6 +245,7 @@ class User extends Controller
 		}
 
 	}
+
 	# 修改邮箱验证
 	public function changeEmail()
 	{
@@ -260,4 +271,42 @@ class User extends Controller
 
 		return $this->fetch('/login');
 	}
+
+	# qq互联 登录
+	public function qqLogin()
+    {
+        $qc = new QC();
+        return redirect($qc->qq_login());
+    }
+
+    #回调函数
+    public function qqCallback()
+    {
+        $qc = new QC();
+		$access_token =  $qc->qq_callback();
+		$openid = $qc->get_openid();
+		$qc = new QC($access_token, $openid);
+		$qq_user_info = $qc->get_user_info();
+		session('username','eq',$openid);
+		# 插入用户名
+		$res = $this->user->addUs($openid);
+		# 商品所有菜单
+    	$res_menu = $this->menu->selectAll();
+    	# 首页轮播图
+    	$res_figure = $this->figure->selectAll();
+    	# 查询前三推荐商品
+    	$res_good = $this->good->recommend();
+    	# 查询前四秒杀商品
+    	$res_seckill = $this->good->seckillGood();
+    	# 查询登陆用户基本信息
+    	$res_user = $this->user->selectAll();
+    
+    	$this->assign('res_menu', $res_menu);
+    	$this->assign('res_figure', $res_figure);
+    	$this->assign('res_good', $res_good);
+    	$this->assign('res_seckill', $res_seckill);
+    	$this->assign('res_user', $res_user);
+        return $this->fetch('/index');
+    }
+	
 }

@@ -103,7 +103,8 @@ class Address extends Model
 		if ($data == null) {
 			return "您未修改任何内容";
 		}
-		$res = $this->where('aid','eq',$aid)->update($data);
+		$res = $this->where('aid','eq',$aid)->find();
+		$res = $res->data($data)->save();
 		if ($res) {
 			return "修改成功";
 		} else {
@@ -154,29 +155,25 @@ class Address extends Model
 	# 设置默认
 	public function changeMoren()
 	{
-		$aid = input('post.aid');
+		$aid = input('param.mid');
 		$username = session('username') ? session('username') : cookie('username');
 		$user = new User;
 		$user_id = $user->getByUsername($username)->uid;
 		# 修改当前user所有的默认收货地址
-		$result = $this->where('user_id','eq',$user_id)->update(['is_default' => 0]);
+		$addr = $this->where('user_id','eq',$user_id)->find();
+		$result = $addr->data(['is_default'=>0])->save();
 		# 指定默认
-		$res = $this->where('aid','eq',$aid)->update(['is_default' => 1]);
+		$address = $this->where('aid','eq',$aid)->find();
+		$res = $address->data(['is_default'=>1])->save();
 		return $res;
 	}
-	# 删除默认
-	public function changDel()
-	{
-		$aid = input('param.aid');
-		$address = $this::get($aid);
-		$res = $address->delete();
-		return $res;
-	}
+
 	# 新增收货地址
 	public function addAddress()
 	{
 		$data = [];
 		$user = new User;
+		$username = session('username') ? session('username') : cookie('username');
 		$user_id = $user->getByUsername($username)->uid;
 		$data['user_id'] = $user_id;
 		$consignee = input('post.consignee');
@@ -205,8 +202,19 @@ class Address extends Model
 		if ($data == null) {
 			return "您未添加任何内容";
 		}
-		$res = $this->insert($data);
-		return $res;
+		$res = $this->data($data)->save();
+		if ($res) {
+			return "添加成功";
+		} else {
+			return "添加失败";
+		}
+	}
+	# 删除收货地址
+	public function changeDel()
+	{
+		$aid = input('post.aid');
+		$res = $this::get($aid);
+		return $res->delete();
 	}
 
 	public function user()

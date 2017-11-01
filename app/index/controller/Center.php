@@ -4,6 +4,7 @@ namespace app\index\controller;
 
 use app\index\model\Collection;
 use app\index\model\Coupon;
+use app\index\model\Good;
 use app\index\model\Order;
 use app\index\model\Site;
 
@@ -13,14 +14,16 @@ class Center extends Controller
 {
 	protected $collection;
 	protected $coupon;
-	protected $site;
+	protected $good;
 	protected $order;
-
+	protected $site;
+	
 	public function _initialize()
 	{
 		parent::_initialize();
 		$this->collection = new Collection;
 		$this->coupon = new Coupon;
+		$this->good = new Good;
 		$this->order = new Order;
 		$this->site = new Site;
 
@@ -45,6 +48,10 @@ class Center extends Controller
 		$count_de = count($res_delivery);
 		# 我的收藏
 		$res_collection = $this->collection->collection();
+		# 今日新品
+		$newtoday = $this->good->newtoday();
+		# 热卖推荐
+		$hotshop = $this->order->hotshop();
 		return $this->fetch('/center',[
 			'coupon'   => $coupon,
 			'order'    => $order,
@@ -54,6 +61,8 @@ class Center extends Controller
 			'time' => time(),
 			'week' =>["日","一","二","三","四","五","六"],
 			'a' => date('w'),
+			'newtoday' => $newtoday,
+			'hotshop' => $hotshop,
 		]);
 	}
 }

@@ -120,6 +120,9 @@
 							{volist name = "res" id = "center"}
 							<li class="user-addresslist ">
 								<span class="new-option-r checked{$center.aid}"><i class="am-icon-check-circle "></i>默认地址</span>
+								{if condition="$center.is_default eq 1"}
+								<span style="float: right;margin-top: -15px;margin-right: -8px"><i class="am-icon-check-circle "></i>默认地址</span>
+								{/if}
 								<p class="new-tit new-p-re">
 									<span class="new-txt">{$center.consignee}</span>
 									<span class="new-txt-rd2">{$center.phone}</span>
@@ -134,28 +137,36 @@
 								</div>
 								<div class="new-addr-btn">
 									<a href="{:url('ChangeAdd/changeAdd', ['aid'=>$center->aid])}"><i class="am-icon-edit"></i>编辑</a>
-									<span class="new-addr-bar isdelome{$center.aid}">|</span>
-									<a href="javascript:void(0);"><i class="am-icon-trash"></i>删除</a>
+									<span class="new-addr-bar">|</span>
+									<a href="javascript:void(0);" id="isdelome{$center.aid}"><i class="am-icon-trash"></i>删除</a>
 								</div>
 							</li>
 							<script type="text/javascript">
 								$(document).ready(function(){
 									$(".checked{$center.aid}").click(function(){
 										var aid = {$center.aid};
-											$.post("{:url('ChangeAdd/moren')}",{aid:aid},function(data){
+
+											$.post("{:url('ChangeAdd/moren')}",{mid:aid},function(data){
+												console.log(data);
 											});
 									});
-									$(".isdelome{$center.aid}").click(function(){
+									$("#isdelome{$center.aid}").click(function(){
 										var aid = {$center.aid};
 											$.post("{:url('ChangeAdd/isReadyDel')}",{aid:aid},function(data){
-												console.log(data);
+												if (data) {
+													location.reload();
+												} else {
+													alert('删除失败');
+												}
 											});
 									})
 								});
 							</script>
 							{/volist}
 						</ul>
-						<div class="clear"></div>
+						<div class="clear">
+							
+						</div>
 						<a class="new-abtn-type" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0}">添加新地址</a>
 						<!--例子-->
 						<div class="am-modal am-modal-no-btn" id="doc-modal-1">
@@ -164,7 +175,8 @@
 
 								<!--标题 -->
 								<div class="am-cf am-padding">
-									<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">新增地址</strong> / <small>Add&nbsp;address</small></div>
+									<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">新增地址</strong>  <small></small></div>
+									<div id="newcenter" style="color: red;"></div>
 								</div>
 								<hr/>
 
@@ -307,13 +319,15 @@
 	});
 	$('#savethis').click(function(){
 		var consignee = $("#user-name").val();
+
 		var phone = $('#user-phone').val();
 		var province = $('#province').val();
 		var city = $('#city').val();
 		var country = $('#country').val();
 		var address = $('#user-intro').val();
 		$.post("{:url('Address/addAddress')}",{consignee:consignee,phone:phone,province:province,city:city,country:country,address:address},function(data){
-			console.log(data);
+			$('#newcenter').html('&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp * ' + ' &nbsp &nbsp'  + data);
+			location.reload();
 		})
 	})
 </script>
